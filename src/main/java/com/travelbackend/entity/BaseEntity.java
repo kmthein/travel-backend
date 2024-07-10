@@ -8,9 +8,8 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-
-@MappedSuperclass
 @Data
+@MappedSuperclass
 public class BaseEntity {
     @Column(name = "is_delete")
     private boolean isDelete;
@@ -21,4 +20,15 @@ public class BaseEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+        isDelete = false;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

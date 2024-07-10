@@ -26,9 +26,14 @@ public class AirlineController {
         return airlineService.findAll();
     }
 
+    @GetMapping("airlines/{id}")
+    private AirLine getById(@PathVariable int id){
+        return airlineService.getById(id);
+    }
+
     @PutMapping("airlines/{id}")
     private ResponseEntity<?> updateAirline(@PathVariable int id, @ModelAttribute AirlineDTO airlineDTO){
-
+        airlineService.update(airlineDTO,id);
         return ResponseEntity.ok("Updated Airline Successful");
     }
 

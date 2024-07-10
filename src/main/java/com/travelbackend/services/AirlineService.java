@@ -9,4 +9,6 @@ public interface AirlineService {
     void save(AirlineDTO airlineDTO);
     List<AirLine> findAll();
     void update(AirlineDTO air,int id);
+
+    AirLine getById(int id);
 }

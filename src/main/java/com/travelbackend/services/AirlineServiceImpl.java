@@ -36,15 +36,23 @@ public class AirlineServiceImpl implements AirlineService {
     @Override
     public void update(AirlineDTO airlineDTO,int id) {
         Image image = new Image();
-        AirLine airLine = airLineDAO.findAirLineById(id);
+        AirLine airLine = getById(id);
+        System.out.println(airLine);
         airLine.setName(airlineDTO.getName());
-        Image img = imageDAO.findImageById(airLine.getImage().getId());
-        if(img != null && !img.getImgUrl().equals(airlineDTO.getImgUrl())){
-            img.setDelete(true);
-            imageDAO.update(img);
-            image.setImgUrl(airlineDTO.getImgUrl());
-        }
-        airLine.setImage(image);
+//        Image img = imageDAO.findImageById(10);
+//        if(img != null && !img.getImgUrl().equals(airlineDTO.getImgUrl())){
+//            img.setDelete(true);
+//            image.setImgUrl(airlineDTO.getImgUrl());
+//            image.setAirline(airLine);
+//            imageDAO.update(img);
+//            airLine.setImage(image);
+//        }
         airLineDAO.update(airLine);
+
+    }
+
+    @Override
+    public AirLine getById(int id) {
+        return airLineDAO.findAirLineById(id);
     }
 }
