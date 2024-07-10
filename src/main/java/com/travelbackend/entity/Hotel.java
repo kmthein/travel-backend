@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,4 +31,10 @@ public class Hotel extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "destination_id")
     private Destination destination;
+
+    @OneToMany(mappedBy = "hotel",cascade = {
+            CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
+    private ArrayList<Image> image;
 }

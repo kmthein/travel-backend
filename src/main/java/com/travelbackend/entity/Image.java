@@ -23,15 +23,19 @@ public class Image extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "airline_id")
     private AirLine airline;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "bus_id")
     private BusService busService;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
+
+    @ManyToOne
+    @JoinColumn(name = "destination_id")
+    private Destination destination;
 }

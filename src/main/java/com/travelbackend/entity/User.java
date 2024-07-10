@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Entity
 @Data
@@ -41,5 +42,11 @@ public class User extends BaseEntity{
 
     @Column(name = "address")
     private String address;
+
+    @OneToOne(mappedBy = "user", cascade = {
+            CascadeType.DETACH,  CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
+    private Image image;
 
 }

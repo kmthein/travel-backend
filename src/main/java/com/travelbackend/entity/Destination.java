@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -30,4 +32,10 @@ public class Destination extends BaseEntity{
 
     @Column(name = "top_place")
     private String topPlace;
+
+    @OneToMany(mappedBy = "destination",cascade = {
+            CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
+    private ArrayList<Image> image;
 }

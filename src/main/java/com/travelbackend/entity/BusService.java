@@ -18,4 +18,10 @@ public class BusService extends BaseEntity{
 
     @Column(name = "name")
     private String name;
+
+    @OneToOne(mappedBy = "busService",cascade = {
+            CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
+    private Image image;
 }
