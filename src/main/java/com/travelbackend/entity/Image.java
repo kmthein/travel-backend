@@ -1,5 +1,7 @@
 package com.travelbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +24,8 @@ public class Image extends BaseEntity{
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToOne
+    @JsonBackReference
+    @OneToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "airline_id")
     private AirLine airline;
 
