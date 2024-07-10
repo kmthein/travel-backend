@@ -19,23 +19,38 @@ public class Image extends BaseEntity{
     @Column(name = "img_url")
     private String imgUrl;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.DETACH,  CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.DETACH,  CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "airline_id")
     private AirLine airline;
 
-    @OneToOne
+    @OneToOne(cascade = {
+            CascadeType.DETACH,  CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "bus_id")
     private BusService busService;
 
-    @ManyToOne
+    @ManyToOne(cascade = {
+            CascadeType.DETACH,  CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @ManyToOne
+    @ManyToOne(cascade = {
+            CascadeType.DETACH,  CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "destination_id")
     private Destination destination;
 }
