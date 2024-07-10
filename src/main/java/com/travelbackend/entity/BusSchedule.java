@@ -34,7 +34,7 @@ public class BusSchedule extends BaseEntity{
     private int distance;
 
     @ManyToOne
-    @Column(name = "departure_place")
+    @JoinColumn(name = "departure_place")
     private Destination departurePlace;
 
     @ManyToOne

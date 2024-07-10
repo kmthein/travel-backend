@@ -41,6 +41,6 @@ public class FlightSchedule extends BaseEntity{
     private Destination arrivalPlace;
 
     @ManyToOne
-    @Column(name = "airline_id")
+    @JoinColumn(name = "airline_id")
     private AirLine airLine;
 }
