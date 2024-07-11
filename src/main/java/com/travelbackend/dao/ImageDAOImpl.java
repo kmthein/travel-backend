@@ -44,9 +44,16 @@ public class ImageDAOImpl implements ImageDAO {
 
     @Override
     @Transactional
-    public void delete(int imageId) {
-        Image image = entityManager.find(Image.class,imageId);
-        entityManager.remove(image);
+    public Image delete(int airlineId) {
+        TypedQuery<Image> query = entityManager.createQuery("from Image i where i.airline.id=:airlineId and i.isDelete =false ",Image.class);
+        query.setParameter("airlineId",airlineId);
+        return query.getSingleResult();
+    }
 
+    @Override
+    public Image findbyAirlineid(int airlineId) {
+        TypedQuery<Image> query = entityManager.createQuery("from Image i where i.airline.id=:airlineId and i.isDelete =false ",Image.class);
+        query.setParameter("airlineId",airlineId);
+        return  query.getSingleResult();
     }
 }

@@ -29,6 +29,8 @@ public class Image extends BaseEntity{
             CascadeType.DETACH,  CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
+
+    @JsonBackReference
     @JoinColumn(name = "airline_id")
     private AirLine airline;
 
@@ -36,6 +38,7 @@ public class Image extends BaseEntity{
             CascadeType.DETACH,  CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
+    @JsonBackReference
     @JoinColumn(name = "bus_id")
     private BusService busService;
 

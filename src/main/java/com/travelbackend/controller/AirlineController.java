@@ -1,6 +1,6 @@
 package com.travelbackend.controller;
 
-import com.travelbackend.dto.AirlineDTO;
+import com.travelbackend.dto.TransportDTO;
 import com.travelbackend.entity.AirLine;
 import com.travelbackend.services.AirlineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("api")
 public class AirlineController {
@@ -16,8 +16,8 @@ public class AirlineController {
     private AirlineService airlineService;
 
     @PostMapping("airlines")
-    private ResponseEntity<?> createAirline(@ModelAttribute AirlineDTO airlineDTO){
-        airlineService.save(airlineDTO);
+    private ResponseEntity<?> createAirline(@ModelAttribute TransportDTO transportDTO){
+        airlineService.save(transportDTO);
         return ResponseEntity.ok("Airline Created");
     }
 
@@ -32,9 +32,14 @@ public class AirlineController {
     }
 
     @PutMapping("airlines/{id}")
-    private ResponseEntity<?> updateAirline(@PathVariable int id, @ModelAttribute AirlineDTO airlineDTO){
-        airlineService.update(airlineDTO,id);
+    private ResponseEntity<?> updateAirline(@PathVariable int id, @ModelAttribute TransportDTO transportDTO){
+        airlineService.update(id, transportDTO);
         return ResponseEntity.ok("Updated Airline Successful");
+    }
+    @DeleteMapping("airlines/{id}")
+    private ResponseEntity<?> deleteAirline(@PathVariable int id){
+        airlineService.deleteAirline(id);
+        return ResponseEntity.ok("Deleted Airline");
     }
 
 }
