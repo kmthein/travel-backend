@@ -1,12 +1,10 @@
 package com.travelbackend.entity;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "bus_service")
@@ -19,9 +17,34 @@ public class BusService extends BaseEntity{
     @Column(name = "name")
     private String name;
 
-    @OneToOne(mappedBy = "busService",cascade = {
+    @OneToMany(mappedBy = "busService",cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
-    private Image image;
+    private List<Image> image;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Image> getImage() {
+        return image;
+    }
+
+    public void setImage(List<Image> image) {
+        this.image = image;
+    }
 }

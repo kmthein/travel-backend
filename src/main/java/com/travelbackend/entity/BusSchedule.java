@@ -1,17 +1,11 @@
 package com.travelbackend.entity;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.security.cert.CertificateExpiredException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "bus_schedule")
@@ -44,4 +38,68 @@ public class BusSchedule extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "bus_id")
     private BusService busService;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public LocalTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(LocalTime departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public LocalTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public Destination getDeparturePlace() {
+        return departurePlace;
+    }
+
+    public void setDeparturePlace(Destination departurePlace) {
+        this.departurePlace = departurePlace;
+    }
+
+    public Destination getArrivalPlace() {
+        return arrivalPlace;
+    }
+
+    public void setArrivalPlace(Destination arrivalPlace) {
+        this.arrivalPlace = arrivalPlace;
+    }
+
+    public BusService getBusService() {
+        return busService;
+    }
+
+    public void setBusService(BusService busService) {
+        this.busService = busService;
+    }
 }

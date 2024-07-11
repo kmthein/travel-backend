@@ -47,6 +47,12 @@ public class ImageDAOImpl implements ImageDAO {
     public void delete(int imageId) {
         Image image = entityManager.find(Image.class,imageId);
         entityManager.remove(image);
+    }
 
+    @Override
+    public List<Image> findImageByTypeId(String type, int id) {
+        TypedQuery<Image> query = entityManager.createQuery("SELECT i FROM Image i WHERE i."+ type +".id = :id AND i.isDelete = false", Image.class);
+        query.setParameter("id", id);
+        return query.getResultList();
     }
 }
