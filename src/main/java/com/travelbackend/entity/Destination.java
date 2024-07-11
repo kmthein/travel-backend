@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -37,5 +38,5 @@ public class Destination extends BaseEntity{
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
-    private ArrayList<Image> image;
+    private List<Image> image;
 }
