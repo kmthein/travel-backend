@@ -16,6 +16,4 @@ public interface FlightClassDAO {
     void update(FlightClass flightClass);
 
     void delete(int flightClassId);
-
-
 }

@@ -3,7 +3,7 @@ package com.travelbackend.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -32,7 +32,7 @@ public class Hotel extends BaseEntity{
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
-    private ArrayList<Image> image;
+    private List<Image> image;
 
     public int getId() {
         return id;
@@ -74,11 +74,11 @@ public class Hotel extends BaseEntity{
         this.destination = destination;
     }
 
-    public ArrayList<Image> getImage() {
+    public List<Image> getImage() {
         return image;
     }
 
-    public void setImage(ArrayList<Image> image) {
+    public void setImage(List<Image> image) {
         this.image = image;
     }
 }
