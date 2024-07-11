@@ -1,13 +1,10 @@
 package com.travelbackend.entity;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "image")
@@ -27,12 +24,15 @@ public class Image extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonBackReference
-    @OneToOne(cascade = {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {
+            CascadeType.DETACH,  CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "airline_id")
     private AirLine airline;
 
-    @OneToOne(cascade = {
+    @ManyToOne(cascade = {
             CascadeType.DETACH,  CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
@@ -52,4 +52,60 @@ public class Image extends BaseEntity{
     })
     @JoinColumn(name = "destination_id")
     private Destination destination;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public AirLine getAirline() {
+        return airline;
+    }
+
+    public void setAirline(AirLine airline) {
+        this.airline = airline;
+    }
+
+    public BusService getBusService() {
+        return busService;
+    }
+
+    public void setBusService(BusService busService) {
+        this.busService = busService;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
+    public Destination getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Destination destination) {
+        this.destination = destination;
+    }
 }

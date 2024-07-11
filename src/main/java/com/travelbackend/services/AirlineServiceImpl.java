@@ -8,6 +8,7 @@ import com.travelbackend.entity.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,10 +22,12 @@ public class AirlineServiceImpl implements AirlineService {
     public void save(AirlineDTO airlineDTO) {
         AirLine airLine = new AirLine();
         Image image = new Image();
+        List<Image> imgList = new ArrayList<>();
         airLine.setName(airlineDTO.getName());
         image.setAirline(airLine);
         image.setImgUrl(airlineDTO.getImgUrl());
-        airLine.setImage(image);
+        imgList.add(image);
+        airLine.setImage(imgList);
         airLineDAO.save(airLine);
     }
 
@@ -35,19 +38,7 @@ public class AirlineServiceImpl implements AirlineService {
 
     @Override
     public void update(AirlineDTO airlineDTO,int id) {
-        Image image = new Image();
-        AirLine airLine = getById(id);
-        System.out.println(airLine);
-        airLine.setName(airlineDTO.getName());
-//        Image img = imageDAO.findImageById(10);
-//        if(img != null && !img.getImgUrl().equals(airlineDTO.getImgUrl())){
-//            img.setDelete(true);
-//            image.setImgUrl(airlineDTO.getImgUrl());
-//            image.setAirline(airLine);
-//            imageDAO.update(img);
-//            airLine.setImage(image);
-//        }
-        airLineDAO.update(airLine);
+
 
     }
 

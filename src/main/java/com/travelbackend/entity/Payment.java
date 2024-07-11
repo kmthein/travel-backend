@@ -1,15 +1,10 @@
 package com.travelbackend.entity;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.security.cert.CertificateExpiredException;
 import java.time.LocalDate;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "payment")
@@ -37,4 +32,60 @@ public class Payment extends BaseEntity{
     @OneToOne
     @JoinColumn(name = "travel_id")
     private TravelPlan travelPlan;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public LocalDate getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(LocalDate paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getPaymentImg() {
+        return paymentImg;
+    }
+
+    public void setPaymentImg(String paymentImg) {
+        this.paymentImg = paymentImg;
+    }
+
+    public TravelPlan getTravelPlan() {
+        return travelPlan;
+    }
+
+    public void setTravelPlan(TravelPlan travelPlan) {
+        this.travelPlan = travelPlan;
+    }
 }
