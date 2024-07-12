@@ -4,7 +4,7 @@ import com.travelbackend.entity.Alert;
 
 import java.util.List;
 
-public interface AlertDAO {
+public interface  AlertDAO {
 
     void save(Alert alert);
 
