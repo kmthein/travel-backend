@@ -38,8 +38,8 @@ public class FlightClassController {
     }
 
     @PutMapping("/flight-class/{id}")
-    public ResponseEntity<?> updateFlightClass(@ModelAttribute FlightClass flightClass,@PathVariable int flightClassId,@RequestParam int airlineId){
-        flightClassService.updateFlightClass(flightClass,flightClassId,airlineId);
+    public ResponseEntity<?> updateFlightClass(@ModelAttribute FlightClass flightClass,@PathVariable int id,@RequestParam int airlineId){
+        flightClassService.updateFlightClass(flightClass,id,airlineId);
         return ResponseEntity.ok("Update FlightClass");
     }
 

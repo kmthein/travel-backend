@@ -11,5 +11,6 @@ public interface DestinationService {
     ResponseDTO addNewDestination(Destination destination, List<String> imgUrls);
     ResponseDTO updateDestination(Destination destination, int id, List<String> imgUrls, List<Integer> deleteImgIds);
 
+    ResponseDTO getDestinationJoin();
     ResponseDTO deleteById(int id);
 }
