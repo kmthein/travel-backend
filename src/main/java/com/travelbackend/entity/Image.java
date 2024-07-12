@@ -17,7 +17,7 @@ public class Image extends BaseEntity{
     @Column(name = "img_url")
     private String imgUrl;
 
-    @OneToOne(cascade = {
+    @ManyToOne(cascade = {
             CascadeType.DETACH,  CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
