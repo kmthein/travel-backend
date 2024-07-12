@@ -54,6 +54,14 @@ public class Image extends BaseEntity{
             CascadeType.DETACH,  CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
+    @JoinColumn(name = "room_id")
+    @JsonBackReference
+    private Room room;
+
+    @ManyToOne(cascade = {
+            CascadeType.DETACH,  CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "destination_id")
     @JsonBackReference
     private Destination destination;
@@ -80,6 +88,14 @@ public class Image extends BaseEntity{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public AirLine getAirline() {
