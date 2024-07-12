@@ -19,6 +19,15 @@ public class DestinationController {
     @Autowired
     private DestinationService destinationService;
 
+    public DestinationService getDestinationService() {
+        return destinationService;
+    }
+
+    @GetMapping("/destination-all")
+    public ResponseEntity<?> getDestinationWithAll() {
+        return null;
+    }
+
     @GetMapping("/destination")
     public ResponseEntity<?> getAllDestinations() {
         List<Destination> destinationList = destinationService.getAllDestinations();
@@ -38,7 +47,6 @@ public class DestinationController {
         }
         return new ResponseEntity<>(destination, HttpStatus.OK);
     }
-
 
     @PostMapping("/destination")
     public ResponseEntity<?> createNewDestination(@ModelAttribute Destination destination, @RequestParam(value = "img_urls", required = false) List<String> imgUrls) {

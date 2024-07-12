@@ -1,4 +1,6 @@
 package com.travelbackend.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -29,13 +31,18 @@ public class FlightSchedule extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "departure_place")
+    @JsonBackReference
     private Destination departurePlace;
 
     @ManyToOne
     @JoinColumn(name = "arrival_place")
+    @JsonBackReference
     private Destination arrivalPlace;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "airline_id")
     private AirLine airLine;
 
