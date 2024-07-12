@@ -1,4 +1,5 @@
 package com.travelbackend.entity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Destination extends BaseEntity{
     @Column(name = "top_place")
     private String topPlace;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "destination",cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
