@@ -36,6 +36,7 @@ public class Destination extends BaseEntity{
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     private List<Image> image;
+
     public int getId() {
         return id;
     }
