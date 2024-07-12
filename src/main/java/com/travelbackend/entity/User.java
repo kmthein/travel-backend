@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -38,11 +39,11 @@ public class User extends BaseEntity{
     @Column(name = "address")
     private String address;
 
-    @OneToOne(mappedBy = "user", cascade = {
+    @OneToMany(mappedBy = "user", cascade = {
             CascadeType.DETACH,  CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
-    private Image image;
+    private List<Image> imageList;
 
     public int getId() {
         return id;
@@ -116,11 +117,11 @@ public class User extends BaseEntity{
         this.address = address;
     }
 
-    public Image getImage() {
-        return image;
+    public List<Image> getImageList() {
+        return imageList;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setImageList(List<Image> imageList) {
+        this.imageList = imageList;
     }
 }

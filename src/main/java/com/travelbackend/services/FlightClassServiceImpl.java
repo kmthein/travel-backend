@@ -1,5 +1,4 @@
 package com.travelbackend.services;
-
 import com.travelbackend.dao.AirLineDAO;
 import com.travelbackend.dao.FlightClassDAO;
 import com.travelbackend.entity.AirLine;
@@ -27,7 +26,7 @@ public class FlightClassServiceImpl implements FlightClassService{
     public void saveFlightClass(FlightClass flightClass, int airlineId) {
         AirLine a = airLineDAO.findAirLineById(airlineId);
         if(a == null){
-            throw new ResourceNotFoundException("Flight-Class not found");
+            throw new ResourceNotFoundException("Class not found");
         }
         flightClass.setAirline(a);
         flightClassDAO.save(flightClass);
@@ -64,7 +63,7 @@ public class FlightClassServiceImpl implements FlightClassService{
     public void deleteFlightClass(int flightClassId) {
         FlightClass flightClass =flightClassDAO.findFlightClassById(flightClassId);
         if(flightClass == null){
-            throw new ResourceNotFoundException("No data in table");
+            throw new ResourceNotFoundException("No data in Flight Class Table");
         }
         flightClass.setDelete(true);
         flightClassDAO.update(flightClass);
