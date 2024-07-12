@@ -1,4 +1,4 @@
-package com.travelbackend.controller;
+package com.travelbackend.controllers;
 
 import com.travelbackend.dto.TransportDTO;
 import com.travelbackend.entity.AirLine;
