@@ -22,6 +22,7 @@ public class Image extends BaseEntity{
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
 
@@ -29,17 +30,16 @@ public class Image extends BaseEntity{
             CascadeType.DETACH,  CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
-
-    @JsonBackReference
     @JoinColumn(name = "airline_id")
+    @JsonBackReference
     private AirLine airline;
 
     @ManyToOne(cascade = {
             CascadeType.DETACH,  CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
-    @JsonBackReference
     @JoinColumn(name = "bus_id")
+    @JsonBackReference
     private BusService busService;
 
     @ManyToOne(cascade = {
@@ -47,6 +47,7 @@ public class Image extends BaseEntity{
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     @JoinColumn(name = "hotel_id")
+    @JsonBackReference
     private Hotel hotel;
 
     @ManyToOne(cascade = {
@@ -54,6 +55,7 @@ public class Image extends BaseEntity{
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     @JoinColumn(name = "destination_id")
+    @JsonBackReference
     private Destination destination;
 
     public int getId() {

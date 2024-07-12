@@ -8,7 +8,9 @@ public interface ImageDAO {
 
     void save(Image image);
 
-    Image findImageById(int imageId);
+    public Image findImageById(int imageId);
+
+    List<Image> findImageByTypeId(String type, int id);
 
     List<Image> findAll();
 

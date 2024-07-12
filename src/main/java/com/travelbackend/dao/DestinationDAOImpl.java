@@ -32,7 +32,7 @@ public class DestinationDAOImpl implements DestinationDAO {
 
     @Override
     public List<Destination> findAll() {
-        TypedQuery<Destination> query = entityManager.createQuery("from Destination ",Destination.class);
+        TypedQuery<Destination> query = entityManager.createQuery("SELECT d from Destination d WHERE d.isDelete = false",Destination.class);
         return query.getResultList();
     }
 
