@@ -1,7 +1,9 @@
 package com.travelbackend.dao;
 
 import com.travelbackend.entity.AirLine;
+import com.travelbackend.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,12 +30,18 @@ public class AirLineDAOImpl implements AirLineDAO{
 
     @Override
     public AirLine findAirLineById(int airLineId) {
-        return entityManager.find(AirLine.class,airLineId);
+        TypedQuery<AirLine> query = entityManager.createQuery("from AirLine a where a.id=:id and a.isDelete = false",AirLine.class);
+        query.setParameter("id",airLineId);
+        try{
+            return query.getSingleResult();
+        }catch (NoResultException e ){
+            throw new ResourceNotFoundException("The airline with ID " + airLineId + " was not found. Please check the ID and try again.");
+        }
     }
 
     @Override
     public List<AirLine> findAll() {
-        TypedQuery<AirLine> query = entityManager.createQuery("from AirLine", AirLine.class);
+        TypedQuery<AirLine> query = entityManager.createQuery("from AirLine a where a.isDelete= false ", AirLine.class);
         return query.getResultList();
     }
 

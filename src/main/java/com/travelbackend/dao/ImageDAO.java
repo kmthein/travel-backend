@@ -16,5 +16,7 @@ public interface ImageDAO {
 
     void update(Image image);
 
-    void delete(int imageId);
+    Image delete(int airlineId);
+
+    Image findbyAirlineid(int airlineId);
 }
