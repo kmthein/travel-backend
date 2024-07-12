@@ -8,6 +8,8 @@ public interface DestinationDAO {
 
     void save(Destination destination);
 
+
+
     Destination findDestinationById(int destinationId);
 
     List<Destination> findAll();
