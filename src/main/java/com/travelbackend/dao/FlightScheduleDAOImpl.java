@@ -1,7 +1,9 @@
 package com.travelbackend.dao;
 
 import com.travelbackend.entity.FlightSchedule;
+import com.travelbackend.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,7 +17,7 @@ public class FlightScheduleDAOImpl implements FlightScheduleDAO {
     private EntityManager entityManager;
 
     @Autowired
-    public FlightScheduleDAOImpl(EntityManager entityManager){
+    public FlightScheduleDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -27,12 +29,18 @@ public class FlightScheduleDAOImpl implements FlightScheduleDAO {
 
     @Override
     public FlightSchedule findFlightScheduleById(int flightScheduleId) {
-        return entityManager.find(FlightSchedule.class,flightScheduleId);
+        TypedQuery<FlightSchedule> query = entityManager.createQuery("from FlightSchedule f where f.id=:flightScheduleId and f.isDelete=false ", FlightSchedule.class);
+        query.setParameter("flightScheduleId",flightScheduleId);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            throw new ResourceNotFoundException("The FlightSchedule with ID " + flightScheduleId + " was not found");
+        }
     }
 
     @Override
     public List<FlightSchedule> findAll() {
-        TypedQuery<FlightSchedule> query = entityManager.createQuery("from FlightSchedule ",FlightSchedule.class);
+        TypedQuery<FlightSchedule> query = entityManager.createQuery("from FlightSchedule f where f.isDelete=false ", FlightSchedule.class);
         return query.getResultList();
     }
 
@@ -45,7 +53,7 @@ public class FlightScheduleDAOImpl implements FlightScheduleDAO {
     @Override
     @Transactional
     public void delete(int flightScheduleId) {
-        FlightSchedule flightSchedule = entityManager.find(FlightSchedule.class,flightScheduleId);
+        FlightSchedule flightSchedule = entityManager.find(FlightSchedule.class, flightScheduleId);
         entityManager.remove(flightSchedule);
     }
 }

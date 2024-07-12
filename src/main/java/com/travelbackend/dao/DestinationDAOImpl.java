@@ -1,7 +1,9 @@
 package com.travelbackend.dao;
 
 import com.travelbackend.entity.Destination;
+import com.travelbackend.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,7 +29,14 @@ public class DestinationDAOImpl implements DestinationDAO {
 
     @Override
     public Destination findDestinationById(int destinationId) {
-        return entityManager.find(Destination.class,destinationId);
+        TypedQuery<Destination> query = entityManager.createQuery("from Destination d where d.id=:destinationId and d.isDelete = false ",Destination.class);
+        query.setParameter("destinationId",destinationId);
+        try {
+            return query.getSingleResult();
+        }catch (NoResultException e){
+            throw new ResourceNotFoundException("The Destination with ID " + destinationId + " was not found");
+        }
+
     }
 
     @Override
