@@ -43,8 +43,8 @@ public class FlightClassServiceImpl implements FlightClassService{
     }
 
     @Override
-    public void updateFlightClass(FlightClass flightClass,int flightClassId,int airlineId) {
-        FlightClass fc = flightClassDAO.findFlightClassById(flightClassId);
+    public void updateFlightClass(FlightClass flightClass,int id,int airlineId) {
+        FlightClass fc = flightClassDAO.findFlightClassById(id);
         if(fc == null){
             throw new ResourceNotFoundException("Flight class not found");
         }

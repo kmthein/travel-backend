@@ -1,6 +1,7 @@
 package com.travelbackend.services;
 
 import com.travelbackend.dao.BusServiceDAO;
+import com.travelbackend.dao.ImageDAO;
 import com.travelbackend.dto.TransportDTO;
 import com.travelbackend.entity.AirLine;
 import com.travelbackend.entity.BusService;
@@ -16,6 +17,9 @@ import java.util.List;
 public class BusStationServiceImpl implements BusStationService {
     @Autowired
     private BusServiceDAO busServiceDAO;
+
+    @Autowired
+    private ImageDAO imageDAO;
 
     @Override
     public void save(TransportDTO transportDTO) {
@@ -47,5 +51,25 @@ public class BusStationServiceImpl implements BusStationService {
         List<Image> filterImg = ImageUtils.filterNonDeleteImages(busService.getImage());
         busService.setImage(filterImg);
         return busService;
+    }
+
+    @Override
+    public void updateBusService(int id, TransportDTO transportDTO) {
+        BusService currentBusService = busServiceDAO.findBusServiceById(id);
+        if(currentBusService != null){
+            currentBusService.setName(transportDTO.getName());
+            Image currentImage = imageDAO.findByBusServiceId(currentBusService.getId());
+            if(currentImage != null && !currentImage.getImgUrl().equals(transportDTO.getImgUrl())){
+                List<Image> imageList = new ArrayList<>();
+                currentImage.setDelete(true);
+                imageDAO.update(currentImage);
+                Image image = new Image();
+                image.setImgUrl(transportDTO.getImgUrl());
+                image.setBusService(currentBusService);
+                imageList.add(image);
+                currentBusService.setImage(imageList);
+            }
+            busServiceDAO.update(currentBusService);
+        }
     }
 }

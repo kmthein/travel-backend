@@ -1,9 +1,12 @@
 package com.travelbackend.dao;
 
 import com.travelbackend.entity.BusSchedule;
+import com.travelbackend.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,12 +30,19 @@ public class BusScheduleDAOImpl implements BusScheduleDAO{
 
     @Override
     public BusSchedule findBusScheduleById(int busScheduleId) {
-        return entityManager.find(BusSchedule.class,busScheduleId);
+        TypedQuery<BusSchedule> query = entityManager.createQuery("from BusSchedule b where b.id=:busScheduleId and b.isDelete=false ", BusSchedule.class);
+        query.setParameter("busScheduleId",busScheduleId);
+        try{
+            return query.getSingleResult();
+        }catch (NoResultException e){
+            throw new ResourceNotFoundException("The BusSchedule with ID " + busScheduleId + " was not found");
+        }
+
     }
 
     @Override
     public List<BusSchedule> findAll() {
-        TypedQuery<BusSchedule> query = entityManager.createQuery("from BusSchedule", BusSchedule.class);
+        TypedQuery<BusSchedule> query = entityManager.createQuery("from BusSchedule b where b.isDelete=false ", BusSchedule.class);
         return query.getResultList();
     }
 
