@@ -1,5 +1,7 @@
 package com.travelbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,7 @@ public class Hotel extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "destination_id")
+    @JsonBackReference
     private Destination destination;
 
     @OneToMany(mappedBy = "hotel",cascade = {
