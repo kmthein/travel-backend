@@ -31,13 +31,15 @@ public class RoomServiceImpl implements RoomService{
         Hotel h = hotelDAO.findHotelById(hotelId);
 
         List<Image> imageList = new ArrayList<>();
-        for (String img : imgUrls){
-            Image image = new Image();
-            image.setImgUrl(img);
-            image.setRoom(room);
-            imageList.add(image);
+        if (imgUrls != null) {
+            for (String img : imgUrls){
+                Image image = new Image();
+                image.setImgUrl(img);
+                image.setRoom(room);
+                imageList.add(image);
+            }
+            room.setImage(imageList);
         }
-        room.setImage(imageList);
         room.setHotel(h);
         roomDAO.save(room);
         ResponseDTO responseDTO = new ResponseDTO();

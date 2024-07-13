@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface HotelDAO {
 
+    List<Hotel> findAllJoin();
     void save(Hotel hotel);
 
     Hotel findHotelById(int hotelId);

@@ -23,11 +23,6 @@ public class DestinationController {
         return destinationService;
     }
 
-    @GetMapping("/destination-all")
-    public ResponseEntity<?> getDestinationWithAll() {
-        return null;
-    }
-
     @GetMapping("/destination")
     public ResponseEntity<?> getAllDestinations() {
         List<Destination> destinationList = destinationService.getAllDestinations();
@@ -46,6 +41,12 @@ public class DestinationController {
             throw new ResourceNotFoundException("Destination id: " + id + " is not found.");
         }
         return new ResponseEntity<>(destination, HttpStatus.OK);
+    }
+
+    @GetMapping("/destination/search={keyword}")
+    public ResponseEntity<?> searchDestinationByKeyword(@PathVariable String keyword) {
+        List<Destination> result  = destinationService.searchDestinationByKeyword(keyword);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/destination")
