@@ -1,7 +1,10 @@
 package com.travelbackend.dto;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 public class ResponseTokenDTO {
     private String Token;
+    private UserDTO userDetails;
 
     public ResponseTokenDTO(){}
 
@@ -15,5 +18,13 @@ public class ResponseTokenDTO {
 
     public void setToken(String token) {
         Token = token;
+    }
+
+    public UserDTO getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(UserDTO userDetails) {
+        this.userDetails = userDetails;
     }
 }
