@@ -7,9 +7,7 @@ import java.util.List;
 public interface DestinationDAO {
 
     void save(Destination destination);
-
-
-
+    List<Destination> searchByKeyword(String keyword);
     Destination findDestinationById(int destinationId);
 
     List<Destination> findAll();

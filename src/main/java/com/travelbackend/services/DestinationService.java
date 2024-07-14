@@ -10,7 +10,7 @@ public interface DestinationService {
     Destination getDestinationById(int id);
     ResponseDTO addNewDestination(Destination destination, List<String> imgUrls);
     ResponseDTO updateDestination(Destination destination, int id, List<String> imgUrls, List<Integer> deleteImgIds);
-
+    List<Destination> searchDestinationByKeyword(String keyword);
     ResponseDTO getDestinationJoin();
     ResponseDTO deleteById(int id);
 }

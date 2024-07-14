@@ -16,6 +16,14 @@ public class DestinationDAOImpl implements DestinationDAO {
 
     private EntityManager entityManager;
 
+    @Override
+    public List<Destination> searchByKeyword(String keyword) {
+        TypedQuery<Destination> query = entityManager.createQuery("SELECT d FROM Destination d WHERE d.name LIKE :keyword AND d.isDelete = false    ", Destination.class);
+        List<Destination> searchResult = query.setParameter("keyword", "%" + keyword + "%").getResultList();
+        System.out.println(searchResult.size());
+        return searchResult;
+    }
+
     @Autowired
     public DestinationDAOImpl(EntityManager entityManager){
         this.entityManager = entityManager;
