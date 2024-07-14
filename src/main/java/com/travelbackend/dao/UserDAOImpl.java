@@ -49,10 +49,10 @@ public class UserDAOImpl implements UserDAO {
     public User findByEmail(String email) {
         TypedQuery<User> query = entityManager.createQuery("from User u where u.email=:email and u.isDelete=false ", User.class);
         query.setParameter("email",email);
-        try{
+        try {
             return query.getSingleResult();
-        }catch (NoResultException error){
-            throw  new ResourceNotFoundException("Email not Found");
+        } catch (NoResultException error){
+            return null;
         }
     }
 
