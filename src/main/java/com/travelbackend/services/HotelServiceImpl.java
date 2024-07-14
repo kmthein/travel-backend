@@ -85,7 +85,11 @@ public class HotelServiceImpl implements HotelService {
                 .stream()
                 .filter(h -> !h.isDelete())
                 .toList();
-        
+
+        for(Hotel h: hotelList) {
+            h.setImage(h.getImage().stream().filter(i -> !i.isDelete()).toList());
+        }
+
         List<HotelDTO> hotelDTOList = new ArrayList<>();
 
         for(Hotel h :hotelList){
@@ -104,6 +108,8 @@ public class HotelServiceImpl implements HotelService {
         if(hotel == null || hotel.isDelete()){
             throw new Exception("Hotel not found");
         }
+
+        hotel.setImage(hotel.getImage().stream().filter(i -> !i.isDelete()).toList());
 
         return getHotelDTO(hotel);
     }
@@ -167,6 +173,8 @@ public class HotelServiceImpl implements HotelService {
                 oldImgUrlList.add(img.getImgUrl());
                 if(!imgUrlList.contains(img.getImgUrl())){
                     img.setDelete(true);
+                } else {
+                    img.setDelete(false);
                 }
             }
 
@@ -189,12 +197,14 @@ public class HotelServiceImpl implements HotelService {
 
     }
 
-    private static HotelDTO getHotelDTO(Hotel h) {
+    private HotelDTO getHotelDTO(Hotel h) {
         HotelDTO hotelDTO = new HotelDTO();
+        hotelDTO.setId(h.getId());
         hotelDTO.setName(h.getName());
         hotelDTO.setDescription(h.getDescription());
         hotelDTO.setRating(h.getRating());
         hotelDTO.setDestinationId(h.getDestination().getId());
+        hotelDTO.setLocation(destinationDAO.findDestinationById(h.getDestination().getId()).getName());
 
         List<Image> imageList = h.getImage();
         List<String> imageUrlList = new ArrayList<>();
