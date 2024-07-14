@@ -1,10 +1,7 @@
 package com.travelbackend.controllers;
 
-import com.travelbackend.dao.BusClassDAO;
 import com.travelbackend.entity.BusClass;
-import com.travelbackend.entity.BusService;
 import com.travelbackend.services.BusClassService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +42,7 @@ public class BusClassController {
         return ResponseEntity.ok("Update Successful");
     }
 
-    @PostMapping("/bus-class/{id}")
+    @DeleteMapping("/bus-class/{id}")
     public String deleteBusClass(@PathVariable int id){
         busClassService.deleteBusClass(id);
         return "Delete Successful";

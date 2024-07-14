@@ -16,6 +16,4 @@ public interface BusClassService {
 
     void deleteBusClass(int id);
 
-
-
 }

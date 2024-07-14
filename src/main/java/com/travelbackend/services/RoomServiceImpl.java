@@ -25,7 +25,6 @@ public class RoomServiceImpl implements RoomService{
         this.imageDAO = imageDAO;
     }
 
-
     @Override
     public ResponseDTO addNewRoom(Room room, List<String> imgUrls, int hotelId) {
         Hotel h = hotelDAO.findHotelById(hotelId);
