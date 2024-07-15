@@ -62,10 +62,9 @@ public class FlightClassServiceImpl implements FlightClassService{
     @Override
     public void deleteFlightClass(int flightClassId) {
         FlightClass flightClass =flightClassDAO.findFlightClassById(flightClassId);
-        if(flightClass == null){
-            throw new ResourceNotFoundException("No data in Flight Class Table");
+        if(flightClass != null){
+            flightClass.setDelete(true);
         }
-        flightClass.setDelete(true);
         flightClassDAO.update(flightClass);
     }
 }
