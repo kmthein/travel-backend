@@ -1,15 +1,20 @@
 package com.travelbackend.services;
 
+import com.travelbackend.dao.AccommodationDAO;
 import com.travelbackend.dao.HotelDAO;
 import com.travelbackend.dao.ImageDAO;
 import com.travelbackend.dao.RoomDAO;
+import com.travelbackend.dto.FindRoomDTO;
 import com.travelbackend.dto.ResponseDTO;
+import com.travelbackend.dto.RoomDTO;
+import com.travelbackend.entity.Accommodation;
 import com.travelbackend.entity.Hotel;
 import com.travelbackend.entity.Image;
 import com.travelbackend.entity.Room;
 import com.travelbackend.utils.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,29 +23,67 @@ public class RoomServiceImpl implements RoomService{
     private HotelDAO hotelDAO;
     private ImageDAO imageDAO;
     private RoomDAO roomDAO;
+    private AccommodationDAO accommodationDAO;
     @Autowired
-    public RoomServiceImpl(RoomDAO roomDAO, HotelDAO hotelDAO, ImageDAO imageDAO){
+    public RoomServiceImpl(RoomDAO roomDAO, HotelDAO hotelDAO, ImageDAO imageDAO, AccommodationDAO accommodationDAO){
         this.roomDAO = roomDAO;
         this.hotelDAO = hotelDAO;
         this.imageDAO = imageDAO;
+        this.accommodationDAO = accommodationDAO;
     }
 
 
     @Override
-    public ResponseDTO addNewRoom(Room room, List<String> imgUrls, int hotelId) {
-        Hotel h = hotelDAO.findHotelById(hotelId);
+    @Transactional
+    public ResponseDTO addNewRoom(RoomDTO roomDTO) throws Exception {
 
-        List<Image> imageList = new ArrayList<>();
-        if (imgUrls != null) {
-            for (String img : imgUrls){
-                Image image = new Image();
-                image.setImgUrl(img);
-                image.setRoom(room);
-                imageList.add(image);
-            }
-            room.setImage(imageList);
+        Room room = new Room();
+
+        //Room Type
+        String roomType = roomDTO.getRoomType();
+        if(roomType == null) {
+            throw new Exception("Room Type is required");
         }
+        room.setRoomType(roomType);
+
+        //Valid Room
+        Integer validRoom = roomDTO.getValidRoom();
+        if(validRoom == null) {
+            throw new Exception("Valid Room is required");
+        }
+        room.setValidRoom(validRoom);
+
+        //Room Price
+        Integer roomPrice = roomDTO.getRoomPrice();
+        if(roomPrice == null) {
+            throw new Exception("Room Price is required");
+        }
+        room.setRoomPrice(roomPrice);
+
+        //Hotel
+        Integer hotelId = roomDTO.getHotelId();
+        if(hotelId == null) {
+            throw new Exception("Hotel ID is required");
+        }
+        Hotel h = hotelDAO.findHotelById(roomDTO.getHotelId());
         room.setHotel(h);
+
+        //Image
+        List<String> imgUrlList = roomDTO.getImgUrlList();
+        if(!imgUrlList.isEmpty()){
+            ArrayList<Image> imageArray = new ArrayList<>();
+            for (String s : imgUrlList) {
+                Image image = new Image();
+                image.setRoom(room);
+                image.setImgUrl(s);
+
+                imageDAO.save(image);
+
+                imageArray.add(image);
+            }
+            room.setImage(imageArray);
+        }
+
         roomDAO.save(room);
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("New Room Created Successfully");
@@ -109,6 +152,29 @@ public class RoomServiceImpl implements RoomService{
         }
         roomDAO.update(room);
         return new ResponseDTO("Room Deleted");
+    }
+
+    @Override
+    public int getAvailableRoom(FindRoomDTO findRoomDTO) {
+        List<Accommodation> accommodationList = accommodationDAO.findAll();
+        Room room = roomDAO.findRoomById(findRoomDTO.getId());
+        int availableRoom = room.getValidRoom();
+
+        for(Accommodation a : accommodationList){
+            System.out.println(a.getCheckIn());
+            System.out.println(findRoomDTO.getCheckInDate());
+
+            if(a.getRoom().getId() == room.getId()){
+                if(
+                        a.getCheckIn().getYear() == findRoomDTO.getCheckInDate().getYear() &&
+                                a.getCheckIn().getMonth() == findRoomDTO.getCheckInDate().getMonth() &&
+                                a.getCheckIn().getDayOfMonth() == findRoomDTO.getCheckInDate().getDayOfMonth()
+                ){
+                    availableRoom = availableRoom -1;
+                }
+            }
+        }
+        return availableRoom;
     }
 
 }

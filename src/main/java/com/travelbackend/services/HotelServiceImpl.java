@@ -1,16 +1,19 @@
 package com.travelbackend.services;
 
+import com.travelbackend.dao.AccommodationDAO;
 import com.travelbackend.dao.DestinationDAO;
 import com.travelbackend.dao.HotelDAO;
 import com.travelbackend.dao.ImageDAO;
+import com.travelbackend.dto.FindHotelDTO;
+import com.travelbackend.dto.FindRoomDTO;
 import com.travelbackend.dto.HotelDTO;
 import com.travelbackend.dto.HotelListDTO;
-import com.travelbackend.entity.Destination;
-import com.travelbackend.entity.Hotel;
-import com.travelbackend.entity.Image;
+import com.travelbackend.entity.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +26,16 @@ public class HotelServiceImpl implements HotelService {
 
     private final ImageDAO imageDAO;
 
-    public HotelServiceImpl(DestinationDAO destinationDAO, HotelDAO hotelDAO, ImageDAO imageDAO) {
+    private final AccommodationDAO accommodationDAO;
+
+    private final RoomService roomService;
+
+    public HotelServiceImpl(DestinationDAO destinationDAO, HotelDAO hotelDAO, ImageDAO imageDAO, AccommodationDAO accommodationDAO, RoomService roomService) {
         this.destinationDAO = destinationDAO;
         this.hotelDAO = hotelDAO;
         this.imageDAO = imageDAO;
+        this.accommodationDAO = accommodationDAO;
+        this.roomService = roomService;
     }
 
     @Override
@@ -111,7 +120,11 @@ public class HotelServiceImpl implements HotelService {
                 .stream()
                 .filter(h -> !h.isDelete())
                 .toList();
-        
+
+        for(Hotel h: hotelList) {
+            h.setImage(h.getImage().stream().filter(i -> !i.isDelete()).toList());
+        }
+
         List<HotelDTO> hotelDTOList = new ArrayList<>();
 
         for(Hotel h :hotelList){
@@ -130,6 +143,8 @@ public class HotelServiceImpl implements HotelService {
         if(hotel == null || hotel.isDelete()){
             throw new Exception("Hotel not found");
         }
+
+        hotel.setImage(hotel.getImage().stream().filter(i -> !i.isDelete()).toList());
 
         return getHotelDTO(hotel);
     }
@@ -193,6 +208,8 @@ public class HotelServiceImpl implements HotelService {
                 oldImgUrlList.add(img.getImgUrl());
                 if(!imgUrlList.contains(img.getImgUrl())){
                     img.setDelete(true);
+                } else {
+                    img.setDelete(false);
                 }
             }
 
@@ -215,12 +232,55 @@ public class HotelServiceImpl implements HotelService {
 
     }
 
-    private static HotelDTO getHotelDTO(Hotel h) {
+    @Override
+    public List<HotelDTO> getAllAvailableHotels(FindHotelDTO findHotelDTO) {
+        String searchString = findHotelDTO.getSearchString();
+        LocalDateTime checkInDate = findHotelDTO.getCheckInDate();
+        LocalDateTime checkOutDate = findHotelDTO.getCheckOutDate();
+        int numberOfPerson = findHotelDTO.getNumberOfPerson();
+
+        List<Hotel> hotelList = hotelDAO.findAll();
+        List<Accommodation> accommodationList = accommodationDAO.findAll();
+
+        List<HotelDTO> hotelDTOList = new ArrayList<>();
+
+        for(Hotel h : hotelList) {
+            HotelDTO hotelDTO = getHotelDTO(h);
+
+            List<Room> roomList = h.getRoomList();
+
+            for(Room r : roomList) {
+                FindRoomDTO findRoomDTO = new FindRoomDTO();
+                findRoomDTO.setId(r.getId());
+                findRoomDTO.setCheckInDate(checkInDate);
+                findRoomDTO.setCheckOutDate(checkOutDate);
+
+                for(Accommodation a : accommodationList) {
+                    if(r.getId() == a.getRoom().getId()) {
+                        int availableRoom = roomService.getAvailableRoom(findRoomDTO);
+                        if (availableRoom > 0) {
+                            hotelDTO.setHasRoom(true);
+                        } else {
+                            hotelDTO.setHasRoom(false);
+                        }
+                    } else {
+                        hotelDTO.setHasRoom(true);
+                    }
+                }
+            }
+            hotelDTOList.add(hotelDTO);
+        }
+        return hotelDTOList.stream().filter(HotelDTO::isHasRoom).toList();
+    }
+
+    private HotelDTO getHotelDTO(Hotel h) {
         HotelDTO hotelDTO = new HotelDTO();
+        hotelDTO.setId(h.getId());
         hotelDTO.setName(h.getName());
         hotelDTO.setDescription(h.getDescription());
         hotelDTO.setRating(h.getRating());
         hotelDTO.setDestinationId(h.getDestination().getId());
+        hotelDTO.setLocation(destinationDAO.findDestinationById(h.getDestination().getId()).getName());
 
         List<Image> imageList = h.getImage();
         List<String> imageUrlList = new ArrayList<>();

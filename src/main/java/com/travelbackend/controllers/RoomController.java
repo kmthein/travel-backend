@@ -1,6 +1,8 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.FindRoomDTO;
 import com.travelbackend.dto.ResponseDTO;
+import com.travelbackend.dto.RoomDTO;
 import com.travelbackend.entity.Room;
 import com.travelbackend.exception.ResourceNotFoundException;
 import com.travelbackend.services.RoomService;
@@ -20,8 +22,8 @@ public class RoomController {
     private RoomService roomService;
 
     @PostMapping("/room")
-    public ResponseEntity<?> createRoom(@ModelAttribute Room room, @RequestParam(value = "img_urls",required = false)List<String> imgUrls, int hotelId){
-        ResponseDTO res = roomService.addNewRoom(room,imgUrls, hotelId);
+    public ResponseEntity<?> createRoom(@ModelAttribute RoomDTO roomDTO) throws Exception {
+        ResponseDTO res = roomService.addNewRoom(roomDTO);
         return new ResponseEntity<>(res.getMessage(), HttpStatus.CREATED);
     }
     @GetMapping("/room")
@@ -53,6 +55,13 @@ public class RoomController {
     public ResponseEntity<?> deleteroomById(@PathVariable int id){
         ResponseDTO responseDTO = roomService.deleteById(id);
         return new ResponseEntity<>("User Deleted",HttpStatus.OK);
+    }
+
+    @GetMapping("/room/findRoom")
+    public ResponseEntity<?> getAvailableRoom(@ModelAttribute FindRoomDTO findRoomDTO){
+        int availableRoom = roomService.getAvailableRoom(findRoomDTO);
+
+        return new ResponseEntity<>(availableRoom,HttpStatus.OK);
     }
 
 

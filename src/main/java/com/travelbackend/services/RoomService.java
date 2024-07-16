@@ -1,12 +1,14 @@
 package com.travelbackend.services;
 
+import com.travelbackend.dto.FindRoomDTO;
 import com.travelbackend.dto.ResponseDTO;
+import com.travelbackend.dto.RoomDTO;
 import com.travelbackend.entity.Room;
 
 import java.util.List;
 
 public interface RoomService {
-    ResponseDTO addNewRoom (Room room, List<String> imgUrls,int hotelId);
+    ResponseDTO addNewRoom (RoomDTO roomDTO) throws Exception;
 
     List<Room> getAllRooms();
     Room getRoombyId(int id);
@@ -14,4 +16,5 @@ public interface RoomService {
 
     ResponseDTO deleteById(int id);
 
+    int getAvailableRoom(FindRoomDTO findRoomDTO);
 }
