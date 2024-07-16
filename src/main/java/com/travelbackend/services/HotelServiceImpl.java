@@ -4,6 +4,7 @@ import com.travelbackend.dao.DestinationDAO;
 import com.travelbackend.dao.HotelDAO;
 import com.travelbackend.dao.ImageDAO;
 import com.travelbackend.dto.HotelDTO;
+import com.travelbackend.dto.HotelListDTO;
 import com.travelbackend.entity.Destination;
 import com.travelbackend.entity.Hotel;
 import com.travelbackend.entity.Image;
@@ -77,6 +78,31 @@ public class HotelServiceImpl implements HotelService {
         //Save
         hotelDAO.save(hotel);
 
+    }
+
+    @Override
+    public List<HotelListDTO> getHotelsFromUser() {
+        List<Hotel> hotelList = hotelDAO.findAllJoin()
+                .stream()
+                .filter(h -> !h.isDelete())
+                .toList();
+        List<HotelListDTO> hotelListDTOList = new ArrayList<>();
+        for (Hotel hotel : hotelList) {
+            HotelListDTO hotelListDTO = new HotelListDTO();
+            hotelListDTO.setId(hotel.getId());
+            hotelListDTO.setName(hotel.getName());
+            hotelListDTO.setDescription(hotel.getDescription());
+            hotelListDTO.setRating(hotel.getRating());
+            hotelListDTO.setDestination(hotel.getDestination());
+            hotelListDTO.setRoomList(hotel.getRoomList());
+            List<String> imgUrlList = new ArrayList<>();
+            for (Image img : hotel.getImage()) {
+                imgUrlList.add(img.getImgUrl());
+            }
+            hotelListDTO.setImgUrlList(imgUrlList);
+            hotelListDTOList.add(hotelListDTO);
+        }
+        return hotelListDTOList;
     }
 
     @Override

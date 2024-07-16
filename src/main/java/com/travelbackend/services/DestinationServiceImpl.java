@@ -24,6 +24,11 @@ public class DestinationServiceImpl implements DestinationService {
     private ImageDAO imageDAO;
 
     @Override
+    public List<Destination> searchDestinationByKeyword(String keyword) {
+        return destinationDAO.searchByKeyword(keyword);
+    }
+
+    @Override
     public List<Destination> getAllDestinations() {
         List<Destination> destinationList = destinationDAO.findAll();
         for (Destination d : destinationList) {
@@ -58,6 +63,11 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
+    public ResponseDTO getDestinationJoin() {
+        return null;
+    }
+
+    @Override
     public ResponseDTO updateDestination(Destination destination, int id, List<String> imgUrls, List<Integer> deleteImgIds) {
         Destination tempDest = destinationDAO.findDestinationById(id);
         if (deleteImgIds != null) {
@@ -74,7 +84,7 @@ public class DestinationServiceImpl implements DestinationService {
             for (String img : imgUrls) {
                 Image image = new Image();
                 image.setImgUrl(img);
-                image.setDestination(destination);
+                image.setDestination(tempDest);
                 imagesList.add(image);
             }
             tempDest.setImage(imagesList);

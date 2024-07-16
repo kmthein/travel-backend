@@ -1,7 +1,10 @@
 package com.travelbackend.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -24,7 +27,14 @@ public class Room extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
+    @JsonBackReference
     private Hotel hotel;
+
+    @OneToMany(mappedBy = "room",cascade = {
+            CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
+    private List<Image> image;
 
     public int getId() {
         return id;
@@ -52,6 +62,14 @@ public class Room extends BaseEntity{
 
     public int getRoomPrice() {
         return roomPrice;
+    }
+
+    public List<Image> getImage() {
+        return image;
+    }
+
+    public void setImage(List<Image> image) {
+        this.image = image;
     }
 
     public void setRoomPrice(int roomPrice) {

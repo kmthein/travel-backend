@@ -17,14 +17,13 @@ public class Image extends BaseEntity{
     @Column(name = "img_url")
     private String imgUrl;
 
-    @OneToOne(cascade = {
+    @ManyToOne(cascade = {
             CascadeType.DETACH,  CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
-
 
     @ManyToOne(cascade = {
             CascadeType.DETACH,  CascadeType.MERGE,
@@ -49,6 +48,14 @@ public class Image extends BaseEntity{
     @JoinColumn(name = "hotel_id")
     @JsonBackReference
     private Hotel hotel;
+
+    @ManyToOne(cascade = {
+            CascadeType.DETACH,  CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
+    @JoinColumn(name = "room_id")
+    @JsonBackReference
+    private Room room;
 
     @ManyToOne(cascade = {
             CascadeType.DETACH,  CascadeType.MERGE,
@@ -80,6 +87,14 @@ public class Image extends BaseEntity{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public AirLine getAirline() {

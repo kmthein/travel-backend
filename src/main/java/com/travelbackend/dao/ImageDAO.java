@@ -19,4 +19,6 @@ public interface ImageDAO {
     Image delete(int airlineId);
 
     Image findbyAirlineid(int airlineId);
+
+    Image findByBusServiceId(int busServiceId);
 }

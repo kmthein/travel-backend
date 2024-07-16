@@ -13,4 +13,6 @@ public interface BusStationService {
     List<BusService> findAll();
 
     BusService getById(int id);
+
+    void updateBusService(int id,TransportDTO transportDTO);
 }

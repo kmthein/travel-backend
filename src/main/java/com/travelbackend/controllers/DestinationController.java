@@ -19,6 +19,10 @@ public class DestinationController {
     @Autowired
     private DestinationService destinationService;
 
+    public DestinationService getDestinationService() {
+        return destinationService;
+    }
+
     @GetMapping("/destination")
     public ResponseEntity<?> getAllDestinations() {
         List<Destination> destinationList = destinationService.getAllDestinations();
@@ -39,6 +43,11 @@ public class DestinationController {
         return new ResponseEntity<>(destination, HttpStatus.OK);
     }
 
+    @GetMapping("/destination/search={keyword}")
+    public ResponseEntity<?> searchDestinationByKeyword(@PathVariable String keyword) {
+        List<Destination> result  = destinationService.searchDestinationByKeyword(keyword);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
     @PostMapping("/destination")
     public ResponseEntity<?> createNewDestination(@ModelAttribute Destination destination, @RequestParam(value = "img_urls", required = false) List<String> imgUrls) {

@@ -1,7 +1,11 @@
 package com.travelbackend.entity;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -9,7 +13,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "flight_schedule")
-public class FlightSchedule extends BaseEntity{
+public class FlightSchedule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -27,15 +31,24 @@ public class FlightSchedule extends BaseEntity{
     @Column(name = "distance")
     private int distance;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH
+    })
     @JoinColumn(name = "departure_place")
-    private Destination departurePlace;
 
-    @ManyToOne
+    private Destination departurePlace;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH
+    })
     @JoinColumn(name = "arrival_place")
     private Destination arrivalPlace;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH
+    })
     @JoinColumn(name = "airline_id")
     private AirLine airLine;
 

@@ -31,6 +31,12 @@ public class HotelDAOImpl implements HotelDAO{
     }
 
     @Override
+    public List<Hotel> findAllJoin() {
+        TypedQuery<Hotel> query = entityManager.createQuery("SELECT h FROM Hotel h JOIN FETCH h.destination",Hotel.class);
+        return query.getResultList();
+    }
+
+    @Override
     public List<Hotel> findAll() {
         TypedQuery<Hotel> query = entityManager.createQuery("from Hotel ",Hotel.class);
             return query.getResultList();

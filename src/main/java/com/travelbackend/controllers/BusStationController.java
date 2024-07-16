@@ -1,7 +1,6 @@
 package com.travelbackend.controllers;
 
 import com.travelbackend.dto.TransportDTO;
-import com.travelbackend.entity.AirLine;
 import com.travelbackend.entity.BusService;
 import com.travelbackend.services.BusStationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +31,11 @@ public class BusStationController {
     @GetMapping("/bus-services/{id}")
     private BusService getBusById(@PathVariable int id){
         return busStationService.getById(id);
+    }
+
+    @PutMapping("/bus-services/{id}")
+    private ResponseEntity<?> updateBusService(@PathVariable int id,TransportDTO transportDTO){
+        busStationService.updateBusService(id,transportDTO);
+        return ResponseEntity.ok("Updated bus services");
     }
 }

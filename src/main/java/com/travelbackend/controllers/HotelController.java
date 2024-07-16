@@ -1,6 +1,8 @@
 package com.travelbackend.controllers;
 
 import com.travelbackend.dto.HotelDTO;
+import com.travelbackend.dto.HotelListDTO;
+import com.travelbackend.entity.Hotel;
 import com.travelbackend.services.HotelService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/hotels")
+@CrossOrigin
 public class HotelController {
 
     private final HotelService hotelService;
@@ -23,6 +26,11 @@ public class HotelController {
 
         hotelService.save(hotelDTO);
         return ResponseEntity.ok("Hotel created");
+    }
+
+    @GetMapping("all")
+    public ResponseEntity<List<HotelListDTO>> getHotelsFromUser(){
+        return ResponseEntity.ok(hotelService.getHotelsFromUser());
     }
 
     @PutMapping("/{id}")

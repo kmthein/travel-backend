@@ -13,7 +13,7 @@ public interface FlightClassService {
 
     FlightClass findFlightClassById(int flightClassId);
 
-    void updateFlightClass(FlightClass flightClass,int flightClassId,int airlineId);
+    void updateFlightClass(FlightClass flightClass,int id,int airlineId);
 
     void deleteFlightClass(int flightClassId);
 }
