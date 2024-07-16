@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -255,22 +254,34 @@ public class HotelServiceImpl implements HotelService {
                 findRoomDTO.setCheckInDate(checkInDate);
                 findRoomDTO.setCheckOutDate(checkOutDate);
 
-                for(Accommodation a : accommodationList) {
-                    if(r.getId() == a.getRoom().getId()) {
-                        int availableRoom = roomService.getAvailableRoom(findRoomDTO);
-                        if (availableRoom > 0) {
-                            hotelDTO.setHasRoom(true);
+                if(!accommodationList.isEmpty()) {
+                    for(Accommodation a : accommodationList) {
+                        if(r.getId() == a.getRoom().getId()) {
+                            int availableRoom = roomService.getAvailableRoom(findRoomDTO);
+                            if (availableRoom > 0) {
+                                hotelDTO.setHasRoom(true);
+                            } else {
+                                hotelDTO.setHasRoom(false);
+                            }
                         } else {
-                            hotelDTO.setHasRoom(false);
+                            hotelDTO.setHasRoom(true);
                         }
-                    } else {
-                        hotelDTO.setHasRoom(true);
                     }
+                } else {
+                    hotelDTO.setHasRoom(true);
                 }
             }
             hotelDTOList.add(hotelDTO);
         }
-        return hotelDTOList.stream().filter(HotelDTO::isHasRoom).toList();
+        List<HotelDTO> filteredList = hotelDTOList.stream().filter(HotelDTO::isHasRoom).toList();
+
+        if(searchString != null){
+            filteredList = filteredList
+                    .stream()
+                    .filter(h -> h.getName().toLowerCase().contains(searchString.toLowerCase()) || destinationDAO.findDestinationById(h.getDestinationId()).getName().toLowerCase().contains(searchString.toLowerCase()))
+                    .toList();
+        }
+        return filteredList;
     }
 
     private HotelDTO getHotelDTO(Hotel h) {
