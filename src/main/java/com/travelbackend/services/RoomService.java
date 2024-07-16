@@ -1,5 +1,6 @@
 package com.travelbackend.services;
 
+import com.travelbackend.dto.FindRoomDTO;
 import com.travelbackend.dto.ResponseDTO;
 import com.travelbackend.dto.RoomDTO;
 import com.travelbackend.entity.Room;
@@ -15,4 +16,5 @@ public interface RoomService {
 
     ResponseDTO deleteById(int id);
 
+    int getAvailableRoom(FindRoomDTO findRoomDTO);
 }

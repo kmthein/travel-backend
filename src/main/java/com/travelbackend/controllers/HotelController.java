@@ -1,5 +1,6 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.FindHotelDTO;
 import com.travelbackend.dto.HotelDTO;
 import com.travelbackend.dto.HotelListDTO;
 import com.travelbackend.entity.Hotel;
@@ -54,4 +55,10 @@ public class HotelController {
         hotelService.delete(id);
         return ResponseEntity.ok("Hotel deleted");
     }
+
+    @GetMapping("findHotel")
+    public ResponseEntity<List<HotelDTO>> getAllAvailableHotels(FindHotelDTO findHotelDTO){
+        return ResponseEntity.ok(hotelService.getAllAvailableHotels(findHotelDTO));
+    }
+
 }

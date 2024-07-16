@@ -1,10 +1,13 @@
 package com.travelbackend.services;
 
+import com.travelbackend.dao.AccommodationDAO;
 import com.travelbackend.dao.HotelDAO;
 import com.travelbackend.dao.ImageDAO;
 import com.travelbackend.dao.RoomDAO;
+import com.travelbackend.dto.FindRoomDTO;
 import com.travelbackend.dto.ResponseDTO;
 import com.travelbackend.dto.RoomDTO;
+import com.travelbackend.entity.Accommodation;
 import com.travelbackend.entity.Hotel;
 import com.travelbackend.entity.Image;
 import com.travelbackend.entity.Room;
@@ -20,11 +23,13 @@ public class RoomServiceImpl implements RoomService{
     private HotelDAO hotelDAO;
     private ImageDAO imageDAO;
     private RoomDAO roomDAO;
+    private AccommodationDAO accommodationDAO;
     @Autowired
-    public RoomServiceImpl(RoomDAO roomDAO, HotelDAO hotelDAO, ImageDAO imageDAO){
+    public RoomServiceImpl(RoomDAO roomDAO, HotelDAO hotelDAO, ImageDAO imageDAO, AccommodationDAO accommodationDAO){
         this.roomDAO = roomDAO;
         this.hotelDAO = hotelDAO;
         this.imageDAO = imageDAO;
+        this.accommodationDAO = accommodationDAO;
     }
 
 
@@ -147,6 +152,29 @@ public class RoomServiceImpl implements RoomService{
         }
         roomDAO.update(room);
         return new ResponseDTO("Room Deleted");
+    }
+
+    @Override
+    public int getAvailableRoom(FindRoomDTO findRoomDTO) {
+        List<Accommodation> accommodationList = accommodationDAO.findAll();
+        Room room = roomDAO.findRoomById(findRoomDTO.getId());
+        int availableRoom = room.getValidRoom();
+
+        for(Accommodation a : accommodationList){
+            System.out.println(a.getCheckIn());
+            System.out.println(findRoomDTO.getCheckInDate());
+
+            if(a.getRoom().getId() == room.getId()){
+                if(
+                        a.getCheckIn().getYear() == findRoomDTO.getCheckInDate().getYear() &&
+                                a.getCheckIn().getMonth() == findRoomDTO.getCheckInDate().getMonth() &&
+                                a.getCheckIn().getDayOfMonth() == findRoomDTO.getCheckInDate().getDayOfMonth()
+                ){
+                    availableRoom = availableRoom -1;
+                }
+            }
+        }
+        return availableRoom;
     }
 
 }

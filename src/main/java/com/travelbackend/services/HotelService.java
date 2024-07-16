@@ -1,8 +1,8 @@
 package com.travelbackend.services;
 
+import com.travelbackend.dto.FindHotelDTO;
 import com.travelbackend.dto.HotelDTO;
 import com.travelbackend.dto.HotelListDTO;
-import com.travelbackend.entity.Hotel;
 
 import java.util.List;
 
@@ -18,4 +18,6 @@ public interface HotelService {
     void delete(int id) throws Exception;
 
     void update(HotelDTO hotelDTO, int id) throws Exception;
+
+    List<HotelDTO> getAllAvailableHotels(FindHotelDTO findHotelDTO);
 }

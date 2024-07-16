@@ -26,4 +26,6 @@ public class HotelDTO {
 
     private List<String> imgUrlList;
 
+    private boolean hasRoom;
+
 }

@@ -14,6 +14,7 @@ public class RoomDTO {
     private int id;
     private String roomType;
     private int validRoom;
+    private int availableRoom;
     private int roomPrice;
     private int hotelId;
     private List<String> imgUrlList;

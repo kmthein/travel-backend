@@ -1,5 +1,6 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.FindRoomDTO;
 import com.travelbackend.dto.ResponseDTO;
 import com.travelbackend.dto.RoomDTO;
 import com.travelbackend.entity.Room;
@@ -54,6 +55,13 @@ public class RoomController {
     public ResponseEntity<?> deleteroomById(@PathVariable int id){
         ResponseDTO responseDTO = roomService.deleteById(id);
         return new ResponseEntity<>("User Deleted",HttpStatus.OK);
+    }
+
+    @GetMapping("/room/findRoom")
+    public ResponseEntity<?> getAvailableRoom(@ModelAttribute FindRoomDTO findRoomDTO){
+        int availableRoom = roomService.getAvailableRoom(findRoomDTO);
+
+        return new ResponseEntity<>(availableRoom,HttpStatus.OK);
     }
 
 
