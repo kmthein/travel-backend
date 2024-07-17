@@ -43,7 +43,8 @@ public class SecurityConfig {
                                         "api/flight-class/**",
                                         "api/flight-schedule/**",
                                         "api/review/**",
-                                        "api/user/**")
+                                        "api/user/**"
+                                        )
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
