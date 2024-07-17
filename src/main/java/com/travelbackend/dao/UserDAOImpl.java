@@ -1,7 +1,9 @@
 package com.travelbackend.dao;
 
 import com.travelbackend.entity.User;
+import com.travelbackend.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,7 +36,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<User> findAll() {
         TypedQuery<User> query = entityManager.createQuery("from User",User.class);
-            return query.getResultList();
+        return query.getResultList();
     }
 
     @Override
@@ -44,9 +46,26 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public User findByEmail(String email) {
+        TypedQuery<User> query = entityManager.createQuery("from User u where u.email=:email and u.isDelete=false ", User.class);
+        query.setParameter("email",email);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException error){
+            return null;
+        }
+    }
+
+    @Override
     @Transactional
     public void delete(int userId) {
         User user = entityManager.find(User.class,userId);
         entityManager.remove(user);
+    }
+
+    @Override
+    public List<User> findByNormalUser() {
+        TypedQuery<User> query = entityManager.createQuery("from User u where u.role='USER'", User.class);
+        return query.getResultList();
     }
 }

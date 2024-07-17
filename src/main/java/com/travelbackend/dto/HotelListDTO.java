@@ -1,33 +1,20 @@
 package com.travelbackend.dto;
 
-
+import com.travelbackend.entity.Destination;
+import com.travelbackend.entity.Room;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.List;
 
 @Getter
 @Setter
-@ToString
-public class HotelDTO {
-
-    private int id;
-
+public class HotelListDTO {
+    private Integer id;
     private String name;
-
     private String description;
-
     private Double rating;
-
-    private Integer destinationId;
-
-    private String location;
-
+    private Destination destination;
+    private List<Room> availableRoomList;
     private List<String> imgUrlList;
-
-    private boolean hasRoom;
-
-    private List<RoomDTO> availableRoomList;
-
 }

@@ -16,4 +16,7 @@ public interface FlightClassService {
     void updateFlightClass(FlightClass flightClass,int id,int airlineId);
 
     void deleteFlightClass(int flightClassId);
+
+    List<FlightClass> getFlightClassByAirline(int airlineId);
+    List<FlightClass> findFlightClassByAirlineId(int id);
 }

@@ -3,7 +3,6 @@ package com.travelbackend.services;
 import com.travelbackend.dao.BusServiceDAO;
 import com.travelbackend.dao.ImageDAO;
 import com.travelbackend.dto.TransportDTO;
-import com.travelbackend.entity.AirLine;
 import com.travelbackend.entity.BusService;
 import com.travelbackend.entity.Image;
 import com.travelbackend.utils.ImageUtils;

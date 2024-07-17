@@ -24,6 +24,11 @@ public class DestinationServiceImpl implements DestinationService {
     private ImageDAO imageDAO;
 
     @Override
+    public List<Destination> searchDestinationByKeyword(String keyword) {
+        return destinationDAO.searchByKeyword(keyword);
+    }
+
+    @Override
     public List<Destination> getAllDestinations() {
         List<Destination> destinationList = destinationDAO.findAll();
         for (Destination d : destinationList) {

@@ -1,4 +1,5 @@
 package com.travelbackend.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,31 +38,31 @@ public class Destination extends BaseEntity{
     })
     private List<Hotel> hotelList;
 
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy = "departurePlace",cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     private List<BusSchedule> busDepartFrom;
 
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy = "arrivalPlace",cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     private List<BusSchedule> busArriveTo;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "departurePlace",cascade = {
-            CascadeType.DETACH,CascadeType.MERGE,
-            CascadeType.PERSIST,CascadeType.REFRESH
+    @JsonIgnore
+    @OneToMany(mappedBy = "departurePlace", cascade = {
+            CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH
     })
     private List<FlightSchedule> flightDepartFrom;
 
-    @JsonManagedReference
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "arrivalPlace",cascade = {
-            CascadeType.DETACH,CascadeType.MERGE,
-            CascadeType.PERSIST,CascadeType.REFRESH
+    @JsonIgnore
+    @OneToMany(mappedBy = "arrivalPlace", cascade = {
+            CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH
     })
     private List<FlightSchedule> flightArriveTo;
 
