@@ -4,10 +4,7 @@ import com.travelbackend.dao.AccommodationDAO;
 import com.travelbackend.dao.DestinationDAO;
 import com.travelbackend.dao.HotelDAO;
 import com.travelbackend.dao.ImageDAO;
-import com.travelbackend.dto.FindHotelDTO;
-import com.travelbackend.dto.FindRoomDTO;
-import com.travelbackend.dto.HotelDTO;
-import com.travelbackend.dto.HotelListDTO;
+import com.travelbackend.dto.*;
 import com.travelbackend.entity.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -245,8 +242,10 @@ public class HotelServiceImpl implements HotelService {
 
         for(Hotel h : hotelList) {
             HotelDTO hotelDTO = getHotelDTO(h);
+            int totalAvailableRoom = 0;
 
             List<Room> roomList = h.getRoomList();
+            List<RoomDTO> roomDTOList = new ArrayList<>();
 
             for(Room r : roomList) {
                 FindRoomDTO findRoomDTO = new FindRoomDTO();
@@ -257,19 +256,29 @@ public class HotelServiceImpl implements HotelService {
                 if(!accommodationList.isEmpty()) {
                     for(Accommodation a : accommodationList) {
                         if(r.getId() == a.getRoom().getId()) {
-                            int availableRoom = roomService.getAvailableRoom(findRoomDTO);
-                            if (availableRoom > 0) {
-                                hotelDTO.setHasRoom(true);
-                            } else {
-                                hotelDTO.setHasRoom(false);
+                            RoomDTO roomDTO = roomService.getAvailableRoom(findRoomDTO);
+                            if (roomDTO.getAvailableRoom() > 0) {
+                                roomDTOList.add(roomDTO);
+                                totalAvailableRoom += roomDTO.getAvailableRoom();
                             }
                         } else {
-                            hotelDTO.setHasRoom(true);
+                            RoomDTO roomDTO = roomService.getAvailableRoom(findRoomDTO);
+                            roomDTOList.add(roomDTO);
+                            totalAvailableRoom += roomDTO.getAvailableRoom();
                         }
                     }
                 } else {
-                    hotelDTO.setHasRoom(true);
+                    RoomDTO roomDTO = roomService.getAvailableRoom(findRoomDTO);
+                    roomDTOList.add(roomDTO);
+                    totalAvailableRoom += roomDTO.getAvailableRoom();
                 }
+            }
+            hotelDTO.setAvailableRoomList(roomDTOList);
+
+            if(totalAvailableRoom > 0) {
+                hotelDTO.setHasRoom(true);
+            } else {
+                hotelDTO.setHasRoom(false);
             }
             hotelDTOList.add(hotelDTO);
         }

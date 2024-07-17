@@ -59,7 +59,7 @@ public class RoomController {
 
     @GetMapping("/room/findRoom")
     public ResponseEntity<?> getAvailableRoom(@ModelAttribute FindRoomDTO findRoomDTO){
-        int availableRoom = roomService.getAvailableRoom(findRoomDTO);
+        RoomDTO availableRoom = roomService.getAvailableRoom(findRoomDTO);
 
         return new ResponseEntity<>(availableRoom,HttpStatus.OK);
     }
