@@ -170,7 +170,7 @@ public class RoomServiceImpl implements RoomService{
                                 a.getCheckIn().getMonth() == findRoomDTO.getCheckInDate().getMonth() &&
                                 a.getCheckIn().getDayOfMonth() == findRoomDTO.getCheckInDate().getDayOfMonth()
                 ){
-                    availableRoom = availableRoom -1;
+                    availableRoom = availableRoom - 1;
                 }
             }
         }
