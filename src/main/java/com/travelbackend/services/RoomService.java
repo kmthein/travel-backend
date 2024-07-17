@@ -16,5 +16,5 @@ public interface RoomService {
 
     ResponseDTO deleteById(int id);
 
-    int getAvailableRoom(FindRoomDTO findRoomDTO);
+    RoomDTO getAvailableRoom(FindRoomDTO findRoomDTO);
 }
