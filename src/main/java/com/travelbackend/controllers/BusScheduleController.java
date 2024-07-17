@@ -1,7 +1,8 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.BusScheduleDTO;
+import com.travelbackend.dto.BusServiceDTO;
 import com.travelbackend.entity.BusSchedule;
-import com.travelbackend.entity.BusService;
 import com.travelbackend.services.BusScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +38,10 @@ public class BusScheduleController {
     private ResponseEntity<?> createFlightSchedule(@PathVariable int id, @ModelAttribute BusSchedule busSchedule, @RequestParam int busId, @RequestParam int departureId, @RequestParam int  arrivalId){
         busScheduleService.updateBusSchedule(id,busSchedule,busId,departureId,arrivalId);
         return ResponseEntity.ok("Updated BusSchedule");
+    }
+
+    @PostMapping("bus-schedule/findBus")
+    private List<BusServiceDTO> getAvailableBusSchedule(@ModelAttribute BusScheduleDTO busScheduleDTO) {
+        return busScheduleService.getAvailableBusSchedule(busScheduleDTO);
     }
 }
