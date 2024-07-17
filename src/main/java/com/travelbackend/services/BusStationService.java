@@ -1,7 +1,6 @@
 package com.travelbackend.services;
 
 import com.travelbackend.dto.TransportDTO;
-import com.travelbackend.entity.AirLine;
 import com.travelbackend.entity.BusService;
 
 import java.util.List;
