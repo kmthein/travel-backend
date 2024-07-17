@@ -17,5 +17,5 @@ public interface BusClassService {
     void deleteBusClass(int id);
 
 
-
+    List<BusClass> getBusClassByBus(int id);
 }

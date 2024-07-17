@@ -76,14 +76,14 @@ public class FlightScheduleServiceImpl implements FlightScheduleService{
         for(FlightSchedule fs : flightScheduleList){
             TransportScheduleDTO fst = new TransportScheduleDTO();
             fst.setId(fs.getId());
-            fst.setAirlineId(fs.getAirLine().getId());
+            fst.setTransportId(fs.getAirLine().getId());
             fst.setName(fs.getAirLine().getName());
             fst.setDate(fs.getDate());
             fst.setArrivalTime(fs.getArrivalTime());
             fst.setDepartureTime(fs.getDepartureTime());
             fst.setArrivalPlace(fs.getArrivalPlace().getName());
             fst.setDeparturePlace(fs.getDeparturePlace().getName());
-            fst.setAriLineImg(fs.getAirLine().getImage());
+            fst.setImg(fs.getAirLine().getImage());
             transportScheduleDTOList.add(fst);
         }
         return transportScheduleDTOList;

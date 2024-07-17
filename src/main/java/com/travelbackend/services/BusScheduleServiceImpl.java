@@ -74,13 +74,14 @@ public class BusScheduleServiceImpl implements BusScheduleService {
         for(BusSchedule bs : busScheduleList){
             TransportScheduleDTO bst = new TransportScheduleDTO();
             bst.setId(bs.getId());
+            bst.setTransportId(bs.getBusService().getId());
             bst.setName(bs.getBusService().getName());
             bst.setDate(bs.getDate());
             bst.setArrivalTime(bs.getArrivalTime());
             bst.setDepartureTime(bs.getDepartureTime());
             bst.setArrivalPlace(bs.getArrivalPlace().getName());
             bst.setDeparturePlace(bs.getDeparturePlace().getName());
-            bst.setAriLineImg(bs.getBusService().getImage());
+            bst.setImg(bs.getBusService().getImage());
             transportScheduleDTOList.add(bst);
         }
         return transportScheduleDTOList;
