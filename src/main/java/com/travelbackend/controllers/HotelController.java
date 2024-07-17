@@ -56,8 +56,9 @@ public class HotelController {
         return ResponseEntity.ok("Hotel deleted");
     }
 
-    @GetMapping("findHotel")
+    @PostMapping("all")
     public ResponseEntity<List<HotelDTO>> getAllAvailableHotels(FindHotelDTO findHotelDTO){
+        System.out.println(findHotelDTO);
         return ResponseEntity.ok(hotelService.getAllAvailableHotels(findHotelDTO));
     }
 

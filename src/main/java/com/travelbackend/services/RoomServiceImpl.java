@@ -155,9 +155,20 @@ public class RoomServiceImpl implements RoomService{
     }
 
     @Override
-    public int getAvailableRoom(FindRoomDTO findRoomDTO) {
+    public RoomDTO getAvailableRoom(FindRoomDTO findRoomDTO) {
         List<Accommodation> accommodationList = accommodationDAO.findAll();
         Room room = roomDAO.findRoomById(findRoomDTO.getId());
+
+        RoomDTO roomDTO = new RoomDTO();
+        roomDTO.setId(room.getId());
+        roomDTO.setRoomType(room.getRoomType());
+        roomDTO.setValidRoom(room.getValidRoom());
+        roomDTO.setRoomPrice(room.getRoomPrice());
+        roomDTO.setHotelId(room.getHotel().getId());
+
+        List<String> imgUrlList = room.getImage().stream().map(Image::getImgUrl).toList();
+        roomDTO.setImgUrlList(imgUrlList);
+
         int availableRoom = room.getValidRoom();
 
         for(Accommodation a : accommodationList){
@@ -170,11 +181,14 @@ public class RoomServiceImpl implements RoomService{
                                 a.getCheckIn().getMonth() == findRoomDTO.getCheckInDate().getMonth() &&
                                 a.getCheckIn().getDayOfMonth() == findRoomDTO.getCheckInDate().getDayOfMonth()
                 ){
-                    availableRoom = availableRoom - 1;
+                    availableRoom = availableRoom -1;
+                    roomDTO.setAvailableRoom(availableRoom);
                 }
+            } else {
+                roomDTO.setAvailableRoom(availableRoom);
             }
         }
-        return availableRoom;
+        return roomDTO;
     }
 
 }

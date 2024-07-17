@@ -28,4 +28,6 @@ public class HotelDTO {
 
     private boolean hasRoom;
 
+    private List<RoomDTO> availableRoomList;
+
 }
