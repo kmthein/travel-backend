@@ -28,14 +28,15 @@ public class BusSchedule extends BaseEntity{
     @Column(name = "distance")
     private int distance;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER, cascade = {
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH
     })
     @JoinColumn(name = "departure_place")
-
     private Destination departurePlace;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER, cascade = {
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH

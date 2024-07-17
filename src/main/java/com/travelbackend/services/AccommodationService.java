@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AccommodationService {
 
-    void saveAccommodation(Accommodation accommodation,int roomId);
+    Accommodation saveAccommodation(Accommodation accommodation,int roomId);
 
     List<Accommodation> findAllAccommodation();
 
