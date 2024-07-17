@@ -1,5 +1,6 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.TransportScheduleDTO;
 import com.travelbackend.entity.BusSchedule;
 import com.travelbackend.entity.BusService;
 import com.travelbackend.services.BusScheduleService;
@@ -38,4 +39,10 @@ public class BusScheduleController {
         busScheduleService.updateBusSchedule(id,busSchedule,busId,departureId,arrivalId);
         return ResponseEntity.ok("Updated BusSchedule");
     }
+
+    @GetMapping("bus-schedule/available-bus")
+    private List<TransportScheduleDTO> getAvailableFlight(){
+        return busScheduleService.getAvailableFlight();
+    }
+
 }

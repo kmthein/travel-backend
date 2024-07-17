@@ -49,4 +49,9 @@ public class FlightClassController {
         flightClassService.deleteFlightClass(id);
         return "Delete flight-CLass";
     }
+
+    @GetMapping("/flight-class/{id}/class")
+    public List<FlightClass> getFlightClassByAirline(@PathVariable int id){
+        return flightClassService.getFlightClassByAirline(id);
+    }
 }

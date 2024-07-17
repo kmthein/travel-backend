@@ -2,6 +2,7 @@ package com.travelbackend.controllers;
 
 
 import com.travelbackend.dto.ResponseDTO;
+import com.travelbackend.dto.UserDTO;
 import com.travelbackend.entity.User;
 import com.travelbackend.exception.ResourceNotFoundException;
 import com.travelbackend.services.UserService;
@@ -12,9 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
-@CrossOrigin
+
 public class UserController {
 
     @Autowired
@@ -24,6 +26,12 @@ public class UserController {
     public ResponseEntity<?> createNewUser(@ModelAttribute User user, @RequestParam(value = "img_urls",required = false) List<String> imgUrls){
         ResponseDTO res = userService.addNewUser(user,imgUrls);
         return new ResponseEntity<>(res.getMessage(), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/user/normal-user")
+    public ResponseEntity<?> getNormalUsers(){
+        List<UserDTO> normalUserList = userService.getAllNormalUsers();
+        return new ResponseEntity<>(normalUserList,HttpStatus.OK);
     }
 
     @GetMapping("/user")

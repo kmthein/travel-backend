@@ -4,6 +4,7 @@ import com.travelbackend.dao.ImageDAO;
 import com.travelbackend.dao.UserDAO;
 import com.travelbackend.dao.UserDAOImpl;
 import com.travelbackend.dto.ResponseDTO;
+import com.travelbackend.dto.UserDTO;
 import com.travelbackend.entity.Image;
 import com.travelbackend.entity.User;
 import com.travelbackend.utils.ImageUtils;
@@ -105,5 +106,24 @@ public class UserServiceImpl implements UserService {
         }
         userDAO.update(user);
         return new ResponseDTO("User Deleted");
+    }
+
+    @Override
+    public List<UserDTO> getAllNormalUsers() {
+        List<User> users = userDAO.findByNormalUser();
+        List<UserDTO> usersList = new ArrayList();
+        for(User user : users){
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(user.getId());
+            userDTO.setUsername(user.getUsername());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setContactNumber(user.getContactNumber());
+            userDTO.setDob(user.getDob());
+            userDTO.setImage(user.getImageList());
+            userDTO.setRole(user.getRole());
+            userDTO.setEmailReceived(user.isEmailReceive());
+            usersList.add(userDTO);
+        }
+        return usersList;
     }
 }

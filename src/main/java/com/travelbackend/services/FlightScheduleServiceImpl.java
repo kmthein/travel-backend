@@ -3,6 +3,7 @@ package com.travelbackend.services;
 import com.travelbackend.dao.AirLineDAO;
 import com.travelbackend.dao.DestinationDAO;
 import com.travelbackend.dao.FlightScheduleDAO;
+import com.travelbackend.dto.TransportScheduleDTO;
 import com.travelbackend.entity.AirLine;
 import com.travelbackend.entity.Destination;
 import com.travelbackend.entity.FlightSchedule;
@@ -10,6 +11,7 @@ import com.travelbackend.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -64,5 +66,26 @@ public class FlightScheduleServiceImpl implements FlightScheduleService{
         currentFlightSchedule.setDeparturePlace(departurePlace);
         currentFlightSchedule.setArrivalPlace(arrivalPlace);
         flightScheduleDAO.update(currentFlightSchedule);
+    }
+
+    @Override
+    public List<TransportScheduleDTO> getAvailableFlight() {
+
+        List<FlightSchedule> flightScheduleList = flightScheduleDAO.availableFlight();
+        List<TransportScheduleDTO> transportScheduleDTOList = new ArrayList<>();
+        for(FlightSchedule fs : flightScheduleList){
+            TransportScheduleDTO fst = new TransportScheduleDTO();
+            fst.setId(fs.getId());
+            fst.setAirlineId(fs.getAirLine().getId());
+            fst.setName(fs.getAirLine().getName());
+            fst.setDate(fs.getDate());
+            fst.setArrivalTime(fs.getArrivalTime());
+            fst.setDepartureTime(fs.getDepartureTime());
+            fst.setArrivalPlace(fs.getArrivalPlace().getName());
+            fst.setDeparturePlace(fs.getDeparturePlace().getName());
+            fst.setAriLineImg(fs.getAirLine().getImage());
+            transportScheduleDTOList.add(fst);
+        }
+        return transportScheduleDTOList;
     }
 }

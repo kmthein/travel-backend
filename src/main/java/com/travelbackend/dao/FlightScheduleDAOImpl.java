@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -55,5 +56,12 @@ public class FlightScheduleDAOImpl implements FlightScheduleDAO {
     public void delete(int flightScheduleId) {
         FlightSchedule flightSchedule = entityManager.find(FlightSchedule.class, flightScheduleId);
         entityManager.remove(flightSchedule);
+    }
+
+    @Override
+    public List<FlightSchedule> availableFlight() {
+        TypedQuery<FlightSchedule> query = entityManager.createQuery("from FlightSchedule f where f.isDelete=false and f.date >=:date", FlightSchedule.class);
+        query.setParameter("date", LocalDate.now());
+        return query.getResultList();
     }
 }
