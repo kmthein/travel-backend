@@ -45,6 +45,7 @@ public class FlightScheduleController {
     private List<TransportScheduleDTO> getAvailableFlight() {
         return flightScheduleService.getAvailableFlight();
     }
+
     @PostMapping("flight-schedule/findFlight")
     private List<AirlineDTO> getAvailableBusSchedule(@ModelAttribute FlightScheduleDTO flightScheduleDTO) {
         return flightScheduleService.getAvailableFlightSchedule(flightScheduleDTO);

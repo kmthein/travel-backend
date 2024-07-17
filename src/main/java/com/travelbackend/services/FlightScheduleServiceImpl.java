@@ -97,6 +97,7 @@ public class FlightScheduleServiceImpl implements FlightScheduleService{
         }
         return transportScheduleDTOList;
     }
+
     @Override
     public List<AirlineDTO> getAvailableFlightSchedule(FlightScheduleDTO flightSchDTO) {
 
@@ -172,6 +173,5 @@ public class FlightScheduleServiceImpl implements FlightScheduleService{
 
 
         return filteredList.stream().filter(AirlineDTO::isHasSeat).toList();
->>>>>>> dfe6d88aa1ebb74fb415070e375c72d4a857f3ae
     }
 }
