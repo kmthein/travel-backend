@@ -1,5 +1,7 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.AirlineDTO;
+import com.travelbackend.dto.FlightScheduleDTO;
 import com.travelbackend.entity.FlightSchedule;
 import com.travelbackend.services.FlightScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +38,10 @@ public class FlightScheduleController {
     private ResponseEntity<?> update(@PathVariable int id,@ModelAttribute FlightSchedule flightSchedule,@RequestParam int airlineId, @RequestParam int departureId, @RequestParam int  arrivalId){
         flightScheduleService.updateFlightSchedule(id,flightSchedule,airlineId,departureId,arrivalId);
         return ResponseEntity.ok("Updated AirlineSchedule");
+    }
+
+    @PostMapping("flight-schedule/findFlight")
+    private List<AirlineDTO> getAvailableBusSchedule(@ModelAttribute FlightScheduleDTO flightScheduleDTO) {
+        return flightScheduleService.getAvailableFlightSchedule(flightScheduleDTO);
     }
 }
