@@ -1,6 +1,8 @@
 package com.travelbackend.controllers;
 
 import com.travelbackend.dto.TransportScheduleDTO;
+import com.travelbackend.dto.AirlineDTO;
+import com.travelbackend.dto.FlightScheduleDTO;
 import com.travelbackend.entity.FlightSchedule;
 import com.travelbackend.services.FlightScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,11 @@ public class FlightScheduleController {
     }
 
     @GetMapping("flight-schedule/available-flight")
-    private List<TransportScheduleDTO> getAvailableFlight(){
+    private List<TransportScheduleDTO> getAvailableFlight() {
         return flightScheduleService.getAvailableFlight();
+    }
+    @PostMapping("flight-schedule/findFlight")
+    private List<AirlineDTO> getAvailableBusSchedule(@ModelAttribute FlightScheduleDTO flightScheduleDTO) {
+        return flightScheduleService.getAvailableFlightSchedule(flightScheduleDTO);
     }
 }

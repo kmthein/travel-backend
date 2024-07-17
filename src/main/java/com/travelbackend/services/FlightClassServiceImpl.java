@@ -2,6 +2,7 @@ package com.travelbackend.services;
 import com.travelbackend.dao.AirLineDAO;
 import com.travelbackend.dao.FlightClassDAO;
 import com.travelbackend.entity.AirLine;
+import com.travelbackend.entity.BusClass;
 import com.travelbackend.entity.FlightClass;
 import com.travelbackend.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +71,13 @@ public class FlightClassServiceImpl implements FlightClassService{
     }
 
     @Override
+<<<<<<< HEAD
     public List<FlightClass> getFlightClassByAirline(int airlineId) {
         return flightClassDAO.getFlightClassByAirline(airlineId);
+=======
+    public List<FlightClass> findFlightClassByAirlineId(int airlineId) {
+        List<FlightClass> flightClassList = flightClassDAO.findAll();
+        return flightClassList.stream().filter(c -> c.getAirline().getId() == airlineId).toList();
+>>>>>>> dfe6d88aa1ebb74fb415070e375c72d4a857f3ae
     }
 }
