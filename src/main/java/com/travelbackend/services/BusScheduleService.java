@@ -1,5 +1,6 @@
 package com.travelbackend.services;
 
+import com.travelbackend.dto.TransportScheduleDTO;
 import com.travelbackend.entity.BusSchedule;
 import com.travelbackend.entity.FlightSchedule;
 
@@ -13,4 +14,6 @@ public interface BusScheduleService {
     BusSchedule getBusScheduleById(int id);
 
     void updateBusSchedule(int id, BusSchedule busSchedule, int busId, int departureId, int arrivalId);
+
+    List<TransportScheduleDTO> getAvailableFlight();
 }

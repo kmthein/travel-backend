@@ -62,4 +62,10 @@ public class UserDAOImpl implements UserDAO {
         User user = entityManager.find(User.class,userId);
         entityManager.remove(user);
     }
+
+    @Override
+    public List<User> findByNormalUser() {
+        TypedQuery<User> query = entityManager.createQuery("from User u where u.role='USER'", User.class);
+        return query.getResultList();
+    }
 }

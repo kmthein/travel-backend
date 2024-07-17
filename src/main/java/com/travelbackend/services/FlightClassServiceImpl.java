@@ -68,4 +68,9 @@ public class FlightClassServiceImpl implements FlightClassService{
         flightClass.setDelete(true);
         flightClassDAO.update(flightClass);
     }
+
+    @Override
+    public List<FlightClass> getFlightClassByAirline(int airlineId) {
+        return flightClassDAO.getFlightClassByAirline(airlineId);
+    }
 }
