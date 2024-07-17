@@ -21,8 +21,9 @@ public class TravelPlanDAOImpl implements TravelPlanDAO{
 
     @Override
     @Transactional
-    public void save(TravelPlan travelPlan) {
+    public TravelPlan save(TravelPlan travelPlan) {
         entityManager.persist(travelPlan);
+        return travelPlan;
     }
 
     @Override

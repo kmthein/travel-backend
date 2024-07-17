@@ -1,6 +1,7 @@
 package com.travelbackend.controllers;
 
 
+import com.travelbackend.dto.ResponseDTO;
 import com.travelbackend.entity.Accommodation;
 import com.travelbackend.services.AccommodationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,11 @@ public class AccommodationController {
 
     @PostMapping("/accommodation")
     public ResponseEntity<?> createAccommodation(@ModelAttribute Accommodation accommodation, @RequestParam int roomId){
-        accommodationService.saveAccommodation(accommodation,roomId);
-        return ResponseEntity.ok("Inserted Accommodation Data");
+        Accommodation temp = accommodationService.saveAccommodation(accommodation,roomId);
+        ResponseDTO res = new ResponseDTO();
+        res.setId(temp.getId());
+        res.setMessage("Accommodation made successfully.");
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping("/accommodation")

@@ -1,12 +1,17 @@
 package com.travelbackend.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Table(name = "travel_plan")
 public class TravelPlan extends BaseEntity{
     @Id
@@ -20,8 +25,11 @@ public class TravelPlan extends BaseEntity{
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Column(name = "total_amount")
-    private int totalAmount;
+    @Column(name = "total_price")
+    private int totalPrice;
+
+    @Column(name = "status")
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "bus_class")
@@ -39,91 +47,11 @@ public class TravelPlan extends BaseEntity{
     @JoinColumn(name = "flight_schedule")
     private FlightSchedule flightSchedule;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "accommodation_id")
     private Accommodation accommodation;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public int getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(int totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public BusClass getBusClass() {
-        return busClass;
-    }
-
-    public void setBusClass(BusClass busClass) {
-        this.busClass = busClass;
-    }
-
-    public BusSchedule getBusSchedule() {
-        return busSchedule;
-    }
-
-    public void setBusSchedule(BusSchedule busSchedule) {
-        this.busSchedule = busSchedule;
-    }
-
-    public FlightClass getFlightClass() {
-        return flightClass;
-    }
-
-    public void setFlightClass(FlightClass flightClass) {
-        this.flightClass = flightClass;
-    }
-
-    public FlightSchedule getFlightSchedule() {
-        return flightSchedule;
-    }
-
-    public void setFlightSchedule(FlightSchedule flightSchedule) {
-        this.flightSchedule = flightSchedule;
-    }
-
-    public Accommodation getAccommodation() {
-        return accommodation;
-    }
-
-    public void setAccommodation(Accommodation accommodation) {
-        this.accommodation = accommodation;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

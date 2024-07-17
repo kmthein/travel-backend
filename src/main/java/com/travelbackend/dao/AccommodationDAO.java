@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AccommodationDAO {
 
-    void save(Accommodation accommodation);
+    Accommodation save(Accommodation accommodation);
 
     Accommodation findAccommodationById(int accommodationId);
 
