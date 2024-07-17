@@ -17,4 +17,5 @@ public class UserDTO {
     private LocalDate dob;
     private Role role;
     private List<?> image;
+    private Boolean emailReceived;
 }

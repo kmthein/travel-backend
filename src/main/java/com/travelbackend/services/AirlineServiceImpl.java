@@ -45,7 +45,6 @@ public class AirlineServiceImpl implements AirlineService {
     @Override
     public void update(int id, TransportDTO transportDTO) {
         AirLine currentAirLine = airLineDAO.findAirLineById(id);
-
         if (currentAirLine != null) {
             currentAirLine.setName(transportDTO.getName());
             Image currentImage = imageDAO.findbyAirlineid(currentAirLine.getId());
@@ -53,10 +52,12 @@ public class AirlineServiceImpl implements AirlineService {
                 List<Image> imgList = new ArrayList<>();
                 currentImage.setDelete(true);
                 imageDAO.update(currentImage);
+
                 Image image = new Image();
                 image.setImgUrl(transportDTO.getImgUrl());
                 image.setAirline(currentAirLine);
                 imgList.add(image);
+                imageDAO.save(image);
                 currentAirLine.setImage(imgList);
             }
             airLineDAO.update(currentAirLine);
