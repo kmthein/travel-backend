@@ -9,6 +9,7 @@ import com.travelbackend.entity.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +100,7 @@ public class HotelServiceImpl implements HotelService {
             hotelListDTO.setDescription(hotel.getDescription());
             hotelListDTO.setRating(hotel.getRating());
             hotelListDTO.setDestination(hotel.getDestination());
-            hotelListDTO.setRoomList(hotel.getRoomList());
+            hotelListDTO.setAvailableRoomList(hotel.getRoomList());
             List<String> imgUrlList = new ArrayList<>();
             for (Image img : hotel.getImage()) {
                 imgUrlList.add(img.getImgUrl());
@@ -231,8 +232,8 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public List<HotelDTO> getAllAvailableHotels(FindHotelDTO findHotelDTO) {
         String searchString = findHotelDTO.getSearchString();
-        LocalDateTime checkInDate = findHotelDTO.getCheckInDate();
-        LocalDateTime checkOutDate = findHotelDTO.getCheckOutDate();
+        LocalDate checkInDate = findHotelDTO.getCheckInDate();
+        LocalDate checkOutDate = findHotelDTO.getCheckOutDate();
         int numberOfPerson = findHotelDTO.getNumberOfPerson();
 
         List<Hotel> hotelList = hotelDAO.findAll();
