@@ -1,5 +1,6 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.TransportScheduleDTO;
 import com.travelbackend.dto.AirlineDTO;
 import com.travelbackend.dto.FlightScheduleDTO;
 import com.travelbackend.entity.FlightSchedule;
@@ -38,6 +39,11 @@ public class FlightScheduleController {
     private ResponseEntity<?> update(@PathVariable int id,@ModelAttribute FlightSchedule flightSchedule,@RequestParam int airlineId, @RequestParam int departureId, @RequestParam int  arrivalId){
         flightScheduleService.updateFlightSchedule(id,flightSchedule,airlineId,departureId,arrivalId);
         return ResponseEntity.ok("Updated AirlineSchedule");
+    }
+
+    @GetMapping("flight-schedule/available-flight")
+    private List<TransportScheduleDTO> getAvailableFlight() {
+        return flightScheduleService.getAvailableFlight();
     }
 
     @PostMapping("flight-schedule/findFlight")

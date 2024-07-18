@@ -1,5 +1,6 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.TransportScheduleDTO;
 import com.travelbackend.dto.BusScheduleDTO;
 import com.travelbackend.dto.BusServiceDTO;
 import com.travelbackend.entity.BusSchedule;
@@ -40,8 +41,13 @@ public class BusScheduleController {
         return ResponseEntity.ok("Updated BusSchedule");
     }
 
+    @GetMapping("bus-schedule/available-bus")
+    private List<TransportScheduleDTO> getAvailableFlight(){
+        return busScheduleService.getAvailableFlight();
+    }
+
     @PostMapping("bus-schedule/findBus")
-    private List<BusServiceDTO> getAvailableBusSchedule(@ModelAttribute BusScheduleDTO busScheduleDTO) {
+    private List<BusServiceDTO> getAvailableBusSchedule( BusScheduleDTO busScheduleDTO) {
         return busScheduleService.getAvailableBusSchedule(busScheduleDTO);
     }
 }

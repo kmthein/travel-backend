@@ -47,4 +47,11 @@ public class FlightClassDAOImpl implements FlightClassDAO{
         FlightClass flightClass = entityManager.find(FlightClass.class,flightClassId);
         entityManager.remove(flightClass);
     }
+
+    @Override
+    public List<FlightClass> getFlightClassByAirline(int airlineId) {
+        TypedQuery<FlightClass> query = entityManager.createQuery("from FlightClass fc where fc.airline.id=:airlineId", FlightClass.class);
+        query.setParameter("airlineId",airlineId);
+        return query.getResultList();
+    }
 }

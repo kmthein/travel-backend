@@ -15,6 +15,6 @@ public class HotelListDTO {
     private String description;
     private Double rating;
     private Destination destination;
-    private List<Room> roomList;
+    private List<Room> availableRoomList;
     private List<String> imgUrlList;
 }

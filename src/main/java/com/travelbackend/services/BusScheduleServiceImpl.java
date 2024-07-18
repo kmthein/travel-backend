@@ -3,6 +3,7 @@ package com.travelbackend.services;
 import com.travelbackend.dao.BusScheduleDAO;
 import com.travelbackend.dao.BusServiceDAO;
 import com.travelbackend.dao.DestinationDAO;
+import com.travelbackend.dto.TransportScheduleDTO;
 import com.travelbackend.dao.TravelPlanDAO;
 import com.travelbackend.dto.BusClassDTO;
 import com.travelbackend.dto.BusScheduleDTO;
@@ -77,81 +78,101 @@ public class BusScheduleServiceImpl implements BusScheduleService {
     }
 
     @Override
-    public List<BusServiceDTO> getAvailableBusSchedule(BusScheduleDTO busSchDTO) {
+    public List<TransportScheduleDTO> getAvailableFlight() {
+        List<BusSchedule> busScheduleList = busScheduleDAO.availableBus();
+        List<TransportScheduleDTO> transportScheduleDTOList = new ArrayList<>();
+        for (BusSchedule bs : busScheduleList) {
+            TransportScheduleDTO bst = new TransportScheduleDTO();
+            bst.setId(bs.getId());
+            bst.setTransportId(bs.getBusService().getId());
+            bst.setName(bs.getBusService().getName());
+            bst.setDate(bs.getDate());
+            bst.setArrivalTime(bs.getArrivalTime());
+            bst.setDepartureTime(bs.getDepartureTime());
+            bst.setArrivalPlace(bs.getArrivalPlace().getName());
+            bst.setDeparturePlace(bs.getDeparturePlace().getName());
+            bst.setImg(bs.getBusService().getImage());
+            transportScheduleDTOList.add(bst);
+        }
+        return transportScheduleDTOList;
+    }
 
-        List<BusSchedule> busScheduleList = busScheduleDAO.findAll();
-        List<TravelPlan> travelPlanList = travelPlanDAO.findAll();
-        List<BusServiceDTO> filteredList = new ArrayList<>();
+        @Override
+        public List<BusServiceDTO> getAvailableBusSchedule(BusScheduleDTO busSchDTO) {
 
-        for(BusSchedule b : busScheduleList) {
-            System.out.println(b.getDate());
-            System.out.println(busSchDTO.getDepartureDate());
+            List<BusSchedule> busScheduleList = busScheduleDAO.findAll();
+            List<TravelPlan> travelPlanList = travelPlanDAO.findAll();
+            List<BusServiceDTO> filteredList = new ArrayList<>();
 
-            if(b.getDeparturePlace().getId() == busSchDTO.getDeparturePlaceId()
-                    && b.getArrivalPlace().getId() == busSchDTO.getArrivalPlaceId()
-                    && b.getDate().equals(busSchDTO.getDepartureDate())
-            ){
-                BusScheduleDTO busScheduleDTO = new BusScheduleDTO();
-                BusServiceDTO busServiceDTO = new BusServiceDTO();
+            for(BusSchedule b : busScheduleList) {
+                System.out.println(b.getDate());
+                System.out.println(busSchDTO.getDepartureDate());
 
-                BusService busService = busServiceDAO.findBusServiceById(b.getBusService().getId());
-                busServiceDTO.setBusServiceId(busService.getId());
-                busServiceDTO.setBusServiceName(busService.getName());
-                List<String> imgUrlList = new ArrayList<>();
-                for(Image i : busService.getImage()) {
-                    imgUrlList.add(i.getImgUrl());
-                }
-                busServiceDTO.setImgUrlList(imgUrlList);
+                if(b.getDeparturePlace().getId() == busSchDTO.getDeparturePlaceId()
+                        && b.getArrivalPlace().getId() == busSchDTO.getArrivalPlaceId()
+                        && b.getDate().equals(busSchDTO.getDepartureDate())
+                ){
+                    BusScheduleDTO busScheduleDTO = new BusScheduleDTO();
+                    BusServiceDTO busServiceDTO = new BusServiceDTO();
 
-                busScheduleDTO.setBusScheduleId(b.getId());
-                busScheduleDTO.setBusServiceId((b.getBusService().getId()));
-                busScheduleDTO.setDeparturePlaceId(b.getDeparturePlace().getId());
-                busScheduleDTO.setDeparturePlaceName(b.getDeparturePlace().getName());
-                busScheduleDTO.setArrivalPlaceId(b.getArrivalPlace().getId());
-                busScheduleDTO.setArrivalPlaceName(b.getArrivalPlace().getName());
-                busScheduleDTO.setDistance(b.getDistance());
-                busScheduleDTO.setDepartureDate(b.getDate());
-                busScheduleDTO.setDepartureTime(b.getDepartureTime());
-                busScheduleDTO.setArrivalTime(b.getArrivalTime());
+                    BusService busService = busServiceDAO.findBusServiceById(b.getBusService().getId());
+                    busServiceDTO.setBusServiceId(busService.getId());
+                    busServiceDTO.setBusServiceName(busService.getName());
+                    List<String> imgUrlList = new ArrayList<>();
+                    for(Image i : busService.getImage()) {
+                        imgUrlList.add(i.getImgUrl());
+                    }
+                    busServiceDTO.setImgUrlList(imgUrlList);
 
-                busServiceDTO.setBusScheduleDTO(busScheduleDTO);
+                    busScheduleDTO.setBusScheduleId(b.getId());
+                    busScheduleDTO.setBusServiceId((b.getBusService().getId()));
+                    busScheduleDTO.setDeparturePlaceId(b.getDeparturePlace().getId());
+                    busScheduleDTO.setDeparturePlaceName(b.getDeparturePlace().getName());
+                    busScheduleDTO.setArrivalPlaceId(b.getArrivalPlace().getId());
+                    busScheduleDTO.setArrivalPlaceName(b.getArrivalPlace().getName());
+                    busScheduleDTO.setDistance(b.getDistance());
+                    busScheduleDTO.setDepartureDate(b.getDate());
+                    busScheduleDTO.setDepartureTime(b.getDepartureTime());
+                    busScheduleDTO.setArrivalTime(b.getArrivalTime());
 
-                List<BusClassDTO> busClassDTOList = new ArrayList<>();
-                int totalAvailableSeat = 0;
+                    busServiceDTO.setBusScheduleDTO(busScheduleDTO);
 
-                List<BusClass> busClassList = busClassService.findBusClassByBusServiceId(b.getBusService().getId());
-                for(BusClass busClass: busClassList) {
-                    BusClassDTO busClassDTO = new BusClassDTO();
-                    busClassDTO.setBusClassId(busClass.getId());
-                    busClassDTO.setBusClassName(busClass.getName());
-                    busClassDTO.setPrice(busClass.getPrice());
-                    busClassDTO.setAvailableSeat(busClass.getValidSeat());
+                    List<BusClassDTO> busClassDTOList = new ArrayList<>();
+                    int totalAvailableSeat = 0;
 
-                    if(travelPlanList != null) {
-                        for(TravelPlan t : travelPlanList){
-                            if(t.getStartDate().equals(busSchDTO.getDepartureDate())
-                                && t.getBusClass().getId() == busClass.getId()
-                            ){
-                                busClassDTO.setAvailableSeat(busClassDTO.getAvailableSeat() -1 );
+                    List<BusClass> busClassList = busClassService.findBusClassByBusServiceId(b.getBusService().getId());
+                    for(BusClass busClass: busClassList) {
+                        BusClassDTO busClassDTO = new BusClassDTO();
+                        busClassDTO.setBusClassId(busClass.getId());
+                        busClassDTO.setBusClassName(busClass.getName());
+                        busClassDTO.setPrice(busClass.getPrice());
+                        busClassDTO.setAvailableSeat(busClass.getValidSeat());
+
+                        if(travelPlanList != null) {
+                            for(TravelPlan t : travelPlanList){
+                                if(t.getStartDate().equals(busSchDTO.getDepartureDate())
+                                        && t.getBusClass().getId() == busClass.getId()
+                                ){
+                                    busClassDTO.setAvailableSeat(busClassDTO.getAvailableSeat() -1 );
+                                }
                             }
                         }
+                        totalAvailableSeat += busClassDTO.getAvailableSeat();
+
+
+                        busClassDTO.setBusServiceId(busClass.getBusService().getId());
+
+                        busClassDTOList.add(busClassDTO);
                     }
-                    totalAvailableSeat += busClassDTO.getAvailableSeat();
+                    busServiceDTO.setBusClassDTOList(busClassDTOList);
 
+                    busServiceDTO.setHasSeat(totalAvailableSeat > 0);
 
-                    busClassDTO.setBusServiceId(busClass.getBusService().getId());
-
-                    busClassDTOList.add(busClassDTO);
+                    filteredList.add(busServiceDTO);
                 }
-                busServiceDTO.setBusClassDTOList(busClassDTOList);
-
-                busServiceDTO.setHasSeat(totalAvailableSeat > 0);
-
-                filteredList.add(busServiceDTO);
             }
+
+
+            return filteredList.stream().filter(BusServiceDTO::isHasSeat).toList();
         }
-
-
-        return filteredList.stream().filter(BusServiceDTO::isHasSeat).toList();
     }
-}

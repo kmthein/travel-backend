@@ -10,6 +10,7 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -57,5 +58,12 @@ public class BusScheduleDAOImpl implements BusScheduleDAO{
     public void delete(int busScheduleId) {
         BusSchedule busSchedule = entityManager.find(BusSchedule.class,busScheduleId);
         entityManager.remove(busSchedule);
+    }
+
+    @Override
+    public List<BusSchedule> availableBus() {
+        TypedQuery<BusSchedule> query = entityManager.createQuery("from BusSchedule f where f.isDelete=false and f.date >=:date", BusSchedule.class);
+        query.setParameter("date", LocalDate.now());
+        return query.getResultList();
     }
 }

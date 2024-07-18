@@ -71,6 +71,11 @@ public class FlightClassServiceImpl implements FlightClassService{
     }
 
     @Override
+    public List<FlightClass> getFlightClassByAirline(int airlineId) {
+        return flightClassDAO.getFlightClassByAirline(airlineId);
+    }
+
+    @Override
     public List<FlightClass> findFlightClassByAirlineId(int airlineId) {
         List<FlightClass> flightClassList = flightClassDAO.findAll();
         return flightClassList.stream().filter(c -> c.getAirline().getId() == airlineId).toList();

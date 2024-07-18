@@ -36,6 +36,7 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
 
     public ResponseDTO register(User user, List<String> imgUrls){
+        System.out.println(user);
         User userExist = userDAO.findByEmail(user.getEmail());
         System.out.println(userExist);
         ResponseDTO responseDTO = new ResponseDTO();
@@ -74,9 +75,11 @@ public class AuthService {
             userDTO.setUsername(existUser.getUsername());
             userDTO.setEmail(existUser.getEmail());
             userDTO.setContactNumber(existUser.getContactNumber());
+            userDTO.setAddress(existUser.getAddress());
             userDTO.setDob(existUser.getDob());
             userDTO.setImage(existUser.getImageList());
             userDTO.setRole(existUser.getRole());
+            userDTO.setEmailReceived(existUser.isEmailReceive());
             res.setUserDetails(userDTO);
             return res;
         } catch (UsernameNotFoundException | BadCredentialsException ex) {

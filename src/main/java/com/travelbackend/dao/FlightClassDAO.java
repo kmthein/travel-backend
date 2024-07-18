@@ -16,4 +16,6 @@ public interface FlightClassDAO {
     void update(FlightClass flightClass);
 
     void delete(int flightClassId);
+
+    List<FlightClass> getFlightClassByAirline(int airlineId);
 }
