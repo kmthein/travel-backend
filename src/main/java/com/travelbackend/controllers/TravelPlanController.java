@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("api")
 @CrossOrigin
@@ -22,6 +24,15 @@ public class TravelPlanController {
                                             @RequestParam(value = "flightClassId", required = false) Integer flightClassId,
                                             @RequestParam(value = "flightScheduleId", required = false) Integer flightScheduleId,
                                             @RequestParam(value = "userId", required = false) Integer userId) {
+        System.out.println(accommodationId + "accom");
+        System.out.println(busClassId + "busClass");
+        System.out.println(flightClassId + "flightClass");
+        System.out.println(busScheduleId + "busSched");
+        System.out.println(flightScheduleId + "flightSched");
+        System.out.println(userId + "userId");
+        if (accommodationId == null) {
+            accommodationId = 0;
+        }
         if (busClassId == null) {
             busClassId = 0;
         }
@@ -36,6 +47,10 @@ public class TravelPlanController {
         }
         if (userId == null) {
             userId = 0;
+        }
+        if (travelPlan.getStartDate() == null) {
+            LocalDate start_date = LocalDate.now();
+            travelPlan.setStartDate(start_date);
         }
         ResponseDTO res = travelPlanService.save(travelPlan, accommodationId, busClassId, busScheduleId, flightClassId, flightScheduleId, userId);
         if (res.getStatus().equals("403")) {
