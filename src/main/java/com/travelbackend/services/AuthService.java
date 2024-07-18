@@ -75,6 +75,7 @@ public class AuthService {
             userDTO.setUsername(existUser.getUsername());
             userDTO.setEmail(existUser.getEmail());
             userDTO.setContactNumber(existUser.getContactNumber());
+            userDTO.setAddress(existUser.getAddress());
             userDTO.setDob(existUser.getDob());
             userDTO.setImage(existUser.getImageList());
             userDTO.setRole(existUser.getRole());

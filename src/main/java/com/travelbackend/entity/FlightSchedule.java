@@ -31,7 +31,6 @@ public class FlightSchedule extends BaseEntity {
     @Column(name = "distance")
     private int distance;
 
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER, cascade = {
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH
@@ -39,7 +38,6 @@ public class FlightSchedule extends BaseEntity {
     @JoinColumn(name = "departure_place")
     private Destination departurePlace;
 
-    @JsonBackReference
     @ManyToOne(cascade = {
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH
