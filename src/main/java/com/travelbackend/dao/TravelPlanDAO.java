@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TravelPlanDAO {
 
-    void save(TravelPlan travelPlan);
+    TravelPlan save(TravelPlan travelPlan);
 
     TravelPlan findTravelPlanById(int travelPlanId);
 

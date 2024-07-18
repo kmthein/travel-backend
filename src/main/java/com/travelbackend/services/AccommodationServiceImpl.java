@@ -24,13 +24,14 @@ public class AccommodationServiceImpl implements AccommodationService{
     }
 
     @Override
-    public void saveAccommodation(Accommodation accommodation, int roomId) {
+    public Accommodation saveAccommodation(Accommodation accommodation, int roomId) {
         Room room = roomDAO.findRoomById(roomId);
         if(room == null){
             throw new ResourceNotFoundException("There are no available rooms in a hotel!");
         }
         accommodation.setRoom(room);
-        accommodationDAO.save(accommodation);
+        Accommodation temp = accommodationDAO.save(accommodation);
+        return temp;
     }
 
     @Override

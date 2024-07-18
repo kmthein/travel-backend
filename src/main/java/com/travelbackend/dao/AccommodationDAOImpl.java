@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Enumeration;
 import java.util.List;
 
 @Repository
@@ -22,8 +21,9 @@ public class AccommodationDAOImpl implements  AccommodationDAO{
 
     @Override
     @Transactional
-    public void save(Accommodation accommodation) {
+    public Accommodation save(Accommodation accommodation) {
         entityManager.persist(accommodation);
+        return accommodation;
     }
 
     @Override

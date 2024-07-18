@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class ResponseDTO {
     private String message;
     private String status;
+    private Integer id;
 
     public ResponseDTO(String message) {
         this.message = message;
