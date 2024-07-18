@@ -38,24 +38,28 @@ public class Destination extends BaseEntity{
     })
     private List<Hotel> hotelList;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "departurePlace",cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     private List<BusSchedule> busDepartFrom;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "arrivalPlace",cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
             CascadeType.PERSIST,CascadeType.REFRESH
     })
     private List<BusSchedule> busArriveTo;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "departurePlace", cascade = {
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH
     })
     private List<FlightSchedule> flightDepartFrom;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "arrivalPlace", cascade = {
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH

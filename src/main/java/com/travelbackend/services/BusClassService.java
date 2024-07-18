@@ -19,5 +19,5 @@ public interface BusClassService {
     List<BusClass> findBusClassByBusServiceId(int busServiceId);
 
 
-
+    List<BusClass> getBusClassByBus(int id);
 }
