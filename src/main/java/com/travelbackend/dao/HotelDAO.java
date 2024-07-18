@@ -16,4 +16,6 @@ public interface HotelDAO {
     void update(Hotel hotel);
 
     void delete(int hotelId);
+
+    List<Hotel> findByDestinationId(int desId);
 }

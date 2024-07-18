@@ -21,4 +21,6 @@ public interface ImageDAO {
     Image findbyAirlineid(int airlineId);
 
     Image findByBusServiceId(int busServiceId);
+
+    List<Image> findByDestinationId(int desId);
 }

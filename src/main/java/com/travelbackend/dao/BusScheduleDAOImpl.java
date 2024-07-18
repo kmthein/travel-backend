@@ -66,4 +66,15 @@ public class BusScheduleDAOImpl implements BusScheduleDAO{
         query.setParameter("date", LocalDate.now());
         return query.getResultList();
     }
+
+    @Override
+    public List<BusSchedule> findbyDestinationId(int desId) {
+        TypedQuery<BusSchedule> query = entityManager.createQuery("from BusSchedule b where b.arrivalPlace.id=:desId and b.isDelete=false ", BusSchedule.class);
+        query.setParameter("desId",desId);
+        try{
+            return query.getResultList();
+        }catch (NoResultException e){
+            throw new ResourceNotFoundException("The BusSchedule with ID " + desId + " was not found");
+        }
+    }
 }
