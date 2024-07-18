@@ -1,5 +1,6 @@
 package com.travelbackend.dao;
 
+import com.travelbackend.entity.Hotel;
 import com.travelbackend.entity.Room;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -47,5 +48,15 @@ public class RoomDAOImpl implements RoomDAO{
     public void delete(int roomId) {
         Room room = entityManager.find(Room.class,roomId);
         entityManager.remove(room);
+    }
+
+    @Override
+    public Hotel findHotelNameByRoomId(int roomId) {
+        TypedQuery<Hotel> query = entityManager.createQuery(
+                "select r.hotel from Room r where r.id = :roomId",
+                Hotel.class
+        );
+        query.setParameter("roomId", roomId);
+        return query.getSingleResult();
     }
 }

@@ -1,5 +1,6 @@
 package com.travelbackend.dao;
 
+import com.travelbackend.entity.Hotel;
 import com.travelbackend.entity.Room;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface RoomDAO {
     void update(Room room);
 
     void delete(int roomId);
+
+    Hotel findHotelNameByRoomId(int roomId);
 }
