@@ -28,19 +28,13 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public void saveReview(Review review, int userId, int destinationId) {
+    public void saveReview(Review review, int userId) {
         User user = userDAO.findUserById(userId);
         if(user == null){
             throw new ResourceNotFoundException("User Data not found");
         }
         review.setUser(user);
-        Destination destination = destinationDAO.findDestinationById(destinationId);
-        if(destination == null){
-            throw new ResourceNotFoundException("Destination data not found");
-        }
-        review.setDestination(destination);
         reviewDAO.save(review);
-
     }
 
     @Override
@@ -54,7 +48,7 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public void updateReview(Review review, int reviewId, int userId, int destinationId) {
+    public void updateReview(Review review, int reviewId, int userId) {
         Review rv = reviewDAO.findReviewById(reviewId);
         if(rv == null){
             throw new ResourceNotFoundException("No Data in Review Table");
@@ -68,11 +62,6 @@ public class ReviewServiceImpl implements ReviewService{
         }
         rv.setUser(user);
 
-        Destination destination = destinationDAO.findDestinationById(destinationId);
-        if(destination == null){
-            throw new ResourceNotFoundException("No data in Destination Table");
-        }
-        rv.setDestination(destination);
         reviewDAO.update(rv);
     }
 
