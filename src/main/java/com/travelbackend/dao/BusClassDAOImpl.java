@@ -1,6 +1,7 @@
 package com.travelbackend.dao;
 
 import com.travelbackend.entity.BusClass;
+import com.travelbackend.entity.FlightClass;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,12 @@ public class BusClassDAOImpl implements BusClassDAO{
     public void delete(int busClassId) {
         BusClass busClass = entityManager.find(BusClass.class,busClassId);
         entityManager.remove(busClass);
+    }
+
+    @Override
+    public List<BusClass> getBusClassByBus(int busId) {
+        TypedQuery<BusClass> query = entityManager.createQuery("from BusClass fc where fc.busService.id=:busId", BusClass.class);
+        query.setParameter("busId",busId);
+        return query.getResultList();
     }
 }

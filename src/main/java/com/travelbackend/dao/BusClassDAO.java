@@ -15,4 +15,6 @@ public interface BusClassDAO {
     void update(BusClass busClass);
 
     void delete(int busClassId);
+
+    public List<BusClass> getBusClassByBus(int busId);
 }

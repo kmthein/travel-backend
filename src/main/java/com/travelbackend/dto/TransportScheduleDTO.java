@@ -12,13 +12,13 @@ import java.util.List;
 @Setter
 public class TransportScheduleDTO {
     private int id;
-    private int airlineId;
+    private int transportId;
     private String name;
     private LocalDate date;
     private  String arrivalPlace;
     private String departurePlace;
     private LocalTime departureTime;
     private LocalTime arrivalTime;
-    private List<Image> ariLineImg;
+    private List<Image> img;
 
 }

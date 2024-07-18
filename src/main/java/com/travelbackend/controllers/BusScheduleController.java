@@ -47,7 +47,7 @@ public class BusScheduleController {
     }
 
     @PostMapping("bus-schedule/findBus")
-    private List<BusServiceDTO> getAvailableBusSchedule(@ModelAttribute BusScheduleDTO busScheduleDTO) {
+    private List<BusServiceDTO> getAvailableBusSchedule( BusScheduleDTO busScheduleDTO) {
         return busScheduleService.getAvailableBusSchedule(busScheduleDTO);
     }
 }
