@@ -21,8 +21,8 @@ public class ReviewController {
     }
 
     @PostMapping("/review")
-    public ResponseEntity<?> createReview(@ModelAttribute Review review,@RequestParam int userId,@RequestParam int destinationId){
-        reviewService.saveReview(review,userId,destinationId);
+    public ResponseEntity<?> createReview(@ModelAttribute Review review,@RequestParam int userId){
+        reviewService.saveReview(review, userId);
         return ResponseEntity.ok("Inserted Review!");
     }
 
@@ -37,8 +37,8 @@ public class ReviewController {
     }
 
     @PutMapping("/review/{id}")
-    public ResponseEntity<?> updateReview(@ModelAttribute Review review,@PathVariable int id,@RequestParam int userId,@RequestParam int destinationId){
-        reviewService.updateReview(review,id,userId,destinationId);
+    public ResponseEntity<?> updateReview(@ModelAttribute Review review,@PathVariable int id,@RequestParam int userId){
+        reviewService.updateReview(review,id,userId);
         return ResponseEntity.ok("Review Updated! ");
     }
 
