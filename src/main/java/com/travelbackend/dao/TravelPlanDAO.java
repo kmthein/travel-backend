@@ -15,4 +15,6 @@ public interface TravelPlanDAO {
     void update(TravelPlan travelPlan);
 
     void delete(int travelPlanId);
+
+    List<String> sendMessageUser();
 }

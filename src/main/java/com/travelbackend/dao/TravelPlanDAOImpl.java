@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -48,5 +49,17 @@ public class TravelPlanDAOImpl implements TravelPlanDAO{
     public void delete(int travelPlanId) {
         TravelPlan travelPlan = entityManager.find(TravelPlan.class,travelPlanId);
         entityManager.remove(travelPlan);
+    }
+
+    @Override
+    public List<String> sendMessageUser() {
+        LocalDate threeDaysAgo = LocalDate.now().minusDays(3);
+        TypedQuery<String> query = entityManager.createQuery(
+                "SELECT t.user.email FROM TravelPlan t WHERE t.startDate = :startDate",
+                String.class
+        );
+        query.setParameter("startDate", threeDaysAgo);
+
+        return query.getResultList();
     }
 }

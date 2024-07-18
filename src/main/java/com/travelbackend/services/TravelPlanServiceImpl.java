@@ -1,13 +1,25 @@
 package com.travelbackend.services;
 
-import com.travelbackend.dao.*;
+import com.travelbackend.dao.AccommodationDAO;
+import com.travelbackend.dao.RoomDAO;
+import com.travelbackend.dao.TravelPlanDAO;
+import com.travelbackend.dao.UserDAO;
+import com.travelbackend.dto.PlanDTO;
 import com.travelbackend.dto.ResponseDTO;
+import com.travelbackend.entity.Accommodation;
+import com.travelbackend.entity.Hotel;
+import com.travelbackend.entity.TravelPlan;
+import com.travelbackend.entity.User;
+import com.travelbackend.dao.*;
 import com.travelbackend.entity.*;
 import com.travelbackend.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TravelPlanServiceImpl implements TravelPlanService {
@@ -19,6 +31,9 @@ public class TravelPlanServiceImpl implements TravelPlanService {
 
     @Autowired
     private TravelPlanDAO travelPlanDAO;
+
+    @Autowired
+    private RoomDAO roomDAO;
 
     @Autowired
     private BusClassDAO busClassDAO;
@@ -81,5 +96,41 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         res.setMessage("Successfully made a travel plan");
         res.setStatus("201");
         return res;
+    }
+
+    @Override
+    public List<PlanDTO> getAllTravelPlan() {
+        List<TravelPlan> travelPlans = travelPlanDAO.findAll();
+        List<PlanDTO> plans = new ArrayList<>();
+        for(TravelPlan travelPlan : travelPlans){
+            PlanDTO planDTO = new PlanDTO();
+            planDTO.setId(travelPlan.getId());
+            planDTO.setUsername(travelPlan.getUser().getUsername());
+            planDTO.setStatus(travelPlan.getStatus());
+            planDTO.setStartDate(travelPlan.getStartDate());
+            planDTO.setTotalPrice(travelPlan.getTotalPrice());
+            if(travelPlan.getFlightSchedule() != null && travelPlan.getFlightClass() != null){
+                planDTO.setArrivalPlace(travelPlan.getFlightSchedule().getArrivalPlace().getName());
+                planDTO.setDeparturePlace(travelPlan.getFlightSchedule().getDeparturePlace().getName());
+                planDTO.setAirlineClass(travelPlan.getFlightClass().getName());
+                planDTO.setAirlineName(travelPlan.getFlightClass().getAirline().getName());
+            }
+            if(travelPlan.getBusClass() != null && travelPlan.getBusSchedule() != null){
+                planDTO.setArrivalPlace(travelPlan.getBusSchedule().getArrivalPlace().getName());
+                planDTO.setDeparturePlace(travelPlan.getBusSchedule().getDeparturePlace().getName());
+                planDTO.setBusClass(travelPlan.getBusClass().getName());
+                planDTO.setBusName(travelPlan.getBusClass().getBusService().getName());
+            }
+            if(travelPlan.getAccommodation() != null){
+                int roomId = travelPlan.getAccommodation().getRoom().getId();
+                Hotel hotel = roomDAO.findHotelNameByRoomId(roomId);
+                if(hotel != null){
+                    planDTO.setHotelName(hotel.getName());
+                    planDTO.setArrivalPlace(hotel.getDestination().getName());
+                }
+            }
+            plans.add(planDTO);
+        }
+        return plans;
     }
 }

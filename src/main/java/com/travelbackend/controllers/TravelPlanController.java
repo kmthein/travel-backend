@@ -1,5 +1,6 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.PlanDTO;
 import com.travelbackend.dto.ResponseDTO;
 import com.travelbackend.entity.TravelPlan;
 import com.travelbackend.services.TravelPlanService;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.time.LocalDate;
 
 @RestController
@@ -59,4 +61,9 @@ public class TravelPlanController {
         return new ResponseEntity<>(res.getMessage(), HttpStatus.OK);
     }
 
+    @GetMapping("/travel-plan")
+    public ResponseEntity<?> getAllTravelPlan(){
+        List<PlanDTO> travelPlans = travelPlanService.getAllTravelPlan();
+        return new ResponseEntity<>(travelPlans,HttpStatus.OK);
+    }
 }
