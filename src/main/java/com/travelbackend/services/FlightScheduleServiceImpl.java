@@ -105,26 +105,31 @@ public class FlightScheduleServiceImpl implements FlightScheduleService{
         List<TravelPlan> travelPlanList = travelPlanDAO.findAll();
         List<AirlineDTO> filteredList = new ArrayList<>();
 
-        for(FlightSchedule f : flightScheduleList) {
+        for (FlightSchedule f : flightScheduleList) {
 
-            if(f.getDeparturePlace().getId() == flightSchDTO.getDeparturePlaceId()
-                    && f.getArrivalPlace().getId() == flightSchDTO.getArrivalPlaceId()
-                    && f.getDate().equals(flightSchDTO.getDepartureDate())
-            ){
+            if (f.getDeparturePlace() != null && f.getArrivalPlace() != null &&
+                    f.getDeparturePlace().getId() == flightSchDTO.getDeparturePlaceId() &&
+                    f.getArrivalPlace().getId() == flightSchDTO.getArrivalPlaceId() &&
+                    f.getDate().equals(flightSchDTO.getDepartureDate())) {
+
                 FlightScheduleDTO flightScheduleDTO = new FlightScheduleDTO();
                 AirlineDTO airlineDTO = new AirlineDTO();
 
-                AirLine airline = airLineDAO.findAirLineById((f.getAirLine().getId()));
-                airlineDTO.setAirlineId(airline.getId());
-                airlineDTO.setAirlineName(airline.getName());
-                List<String> imgUrlList = new ArrayList<>();
-                for(Image i : airline.getImage()) {
-                    imgUrlList.add(i.getImgUrl());
+                AirLine airline = airLineDAO.findAirLineById(f.getAirLine().getId());
+                if (airline != null) {
+                    airlineDTO.setAirlineId(airline.getId());
+                    airlineDTO.setAirlineName(airline.getName());
+                    List<String> imgUrlList = new ArrayList<>();
+                    for (Image i : airline.getImage()) {
+                        if (i != null) {
+                            imgUrlList.add(i.getImgUrl());
+                        }
+                    }
+                    airlineDTO.setImgUrlList(imgUrlList);
                 }
-                airlineDTO.setImgUrlList(imgUrlList);
 
                 flightScheduleDTO.setFlightScheduleId(f.getId());
-                flightScheduleDTO.setAirlineId((f.getAirLine().getId()));
+                flightScheduleDTO.setAirlineId(f.getAirLine().getId());
                 flightScheduleDTO.setDeparturePlaceId(f.getDeparturePlace().getId());
                 flightScheduleDTO.setDeparturePlaceName(f.getDeparturePlace().getName());
                 flightScheduleDTO.setArrivalPlaceId(f.getArrivalPlace().getId());
@@ -140,24 +145,23 @@ public class FlightScheduleServiceImpl implements FlightScheduleService{
                 int totalAvailableSeat = 0;
 
                 List<FlightClass> flightClassList = flightClassService.findFlightClassByAirlineId(f.getAirLine().getId());
-                for(FlightClass flightClass: flightClassList) {
+                for (FlightClass flightClass : flightClassList) {
                     FlightClassDTO flightClassDTO = new FlightClassDTO();
                     flightClassDTO.setFlightClassId(flightClass.getId());
                     flightClassDTO.setFlightClassName(flightClass.getName());
                     flightClassDTO.setPrice(flightClass.getPrice());
                     flightClassDTO.setAvailableSeat(flightClass.getValidSeat());
 
-                    if(travelPlanList != null) {
-                        for(TravelPlan t : travelPlanList){
-                            if(t.getStartDate().equals(flightSchDTO.getDepartureDate())
-                                    && t.getBusClass().getId() == flightClass.getId()
-                            ){
-                                flightClassDTO.setAvailableSeat(flightClassDTO.getAvailableSeat() -1 );
+                    if (travelPlanList != null) {
+                        for (TravelPlan t : travelPlanList) {
+                            if (t.getStartDate().equals(flightSchDTO.getDepartureDate()) &&
+                                    t.getFlightClass() != null &&
+                                    t.getFlightClass().getId() == flightClass.getId()) {
+                                flightClassDTO.setAvailableSeat(flightClassDTO.getAvailableSeat() - 1);
                             }
                         }
                     }
                     totalAvailableSeat += flightClassDTO.getAvailableSeat();
-
 
                     flightClassDTO.setAirlineId(flightClass.getAirline().getId());
 
@@ -170,7 +174,6 @@ public class FlightScheduleServiceImpl implements FlightScheduleService{
                 filteredList.add(airlineDTO);
             }
         }
-
 
         return filteredList.stream().filter(AirlineDTO::isHasSeat).toList();
     }

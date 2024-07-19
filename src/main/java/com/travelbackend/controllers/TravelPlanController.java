@@ -19,6 +19,36 @@ public class TravelPlanController {
     @Autowired
     private TravelPlanService travelPlanService;
 
+    @GetMapping("/travel-plan/top-member")
+    public ResponseEntity<?> getTopMember() {
+        return new ResponseEntity<>(travelPlanService.countTravelsByUser(), HttpStatus.OK);
+    }
+
+    @GetMapping("/travel-plan/percentage")
+    public ResponseEntity<?> getTravelByPercentage() {
+        return new ResponseEntity<>(travelPlanService.getTravelByPercent(), HttpStatus.OK);
+    }
+
+    @GetMapping("/travel-plan/top-hotels")
+    public ResponseEntity<?> getTopVisitedHotels() {
+        return new ResponseEntity<>(travelPlanService.getTopHotelVisit(), HttpStatus.OK);
+    }
+
+    @PostMapping("/travel-plan/income-month")
+    public ResponseEntity<?> totalIncomeByMonth(@RequestParam int year) {
+        return new ResponseEntity<>(travelPlanService.totalIncomeByMonth(year), HttpStatus.OK);
+    }
+
+    @PostMapping("/travel-plan/member-month")
+    public ResponseEntity<?> newMemberByMonth(@RequestParam int year) {
+        return new ResponseEntity<>(travelPlanService.newMemberByMonth(year), HttpStatus.OK);
+    }
+
+    @PostMapping("/travel-plan/travel-month")
+    public ResponseEntity<?> travelsByMonth(@RequestParam int year) {
+        return new ResponseEntity<>(travelPlanService.getTotalTravelCountByMonth(year), HttpStatus.OK);
+    }
+
     @PostMapping("/travel-plan")
     public ResponseEntity<?> saveTravelPlan(@ModelAttribute TravelPlan travelPlan, @RequestParam(value = "accommodationId", required = false) Integer accommodationId,
                                             @RequestParam(value = "busClassId", required = false) Integer busClassId,
@@ -26,12 +56,6 @@ public class TravelPlanController {
                                             @RequestParam(value = "flightClassId", required = false) Integer flightClassId,
                                             @RequestParam(value = "flightScheduleId", required = false) Integer flightScheduleId,
                                             @RequestParam(value = "userId", required = false) Integer userId) {
-        System.out.println(accommodationId + "accom");
-        System.out.println(busClassId + "busClass");
-        System.out.println(flightClassId + "flightClass");
-        System.out.println(busScheduleId + "busSched");
-        System.out.println(flightScheduleId + "flightSched");
-        System.out.println(userId + "userId");
         if (accommodationId == null) {
             accommodationId = 0;
         }

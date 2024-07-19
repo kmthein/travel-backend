@@ -60,7 +60,7 @@ public class FlightScheduleDAOImpl implements FlightScheduleDAO {
 
     @Override
     public List<FlightSchedule> availableFlight() {
-        TypedQuery<FlightSchedule> query = entityManager.createQuery("from FlightSchedule f where f.isDelete=false and f.date >=:date", FlightSchedule.class);
+        TypedQuery<FlightSchedule> query = entityManager.createQuery("from FlightSchedule f where f.isDelete=false and f.date >=:date ORDER BY f.date", FlightSchedule.class);
         query.setParameter("date", LocalDate.now());
         return query.getResultList();
     }

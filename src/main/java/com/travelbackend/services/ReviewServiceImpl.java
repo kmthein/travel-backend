@@ -3,14 +3,15 @@ package com.travelbackend.services;
 import com.travelbackend.dao.DestinationDAO;
 import com.travelbackend.dao.ReviewDAO;
 import com.travelbackend.dao.UserDAO;
-import com.travelbackend.entity.Destination;
+import com.travelbackend.dto.ReviewDTO;
+import com.travelbackend.entity.Image;
 import com.travelbackend.entity.Review;
 import com.travelbackend.entity.User;
 import com.travelbackend.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.RefreshFailedException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,8 +39,25 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public List<Review> findAllReview() {
-        return reviewDAO.findAll();
+    public List<ReviewDTO> findAllReview() {
+        List<Review> reviews = reviewDAO.findAll();
+        List<ReviewDTO> reviewDTOList = new ArrayList<>();
+        for (Review r : reviews) {
+            ReviewDTO reviewDTO = new ReviewDTO();
+            reviewDTO.setId(r.getId());
+            reviewDTO.setDescription(r.getDescription());
+            reviewDTO.setRating(r.getRating());
+            reviewDTO.setUserId(r.getUser().getId());
+            reviewDTO.setUsername(r.getUser().getUsername());
+            reviewDTO.setCreatedAt(r.getUpdatedAt());
+            List<String> userImg = new ArrayList<>();
+            for (Image img : r.getUser().getImageList()) {
+                userImg.add(img.getImgUrl());
+            }
+            reviewDTO.setUserImg(userImg);
+            reviewDTOList.add(reviewDTO);
+        }
+        return reviewDTOList;
     }
 
     @Override
