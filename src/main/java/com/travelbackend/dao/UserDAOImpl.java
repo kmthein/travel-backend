@@ -66,13 +66,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> findByNormalUser() {
-        TypedQuery<User> query = entityManager.createQuery("from User u where u.role='USER'", User.class);
+        TypedQuery<User> query = entityManager.createQuery("from User u where u.role='USER' and u.isDelete=false ", User.class);
         return query.getResultList();
     }
 
     @Override
-    public List<String> weeklyEmailSendList() {
-        TypedQuery<String> query = entityManager.createQuery("SELECT u.email FROM User u WHERE u.emailReceive = true and u.role='USER' and u.isDelete=false ", String.class);
+    public List<User> weeklyEmailSendList() {
+        TypedQuery<User> query = entityManager.createQuery("FROM User u WHERE u.emailReceive = true and u.role='USER' and u.isDelete=false ", User.class);
         return query.getResultList();
     }
 }

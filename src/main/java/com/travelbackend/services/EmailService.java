@@ -1,9 +1,12 @@
 package com.travelbackend.services;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,12 +20,17 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String email;
 
-    public void sendMail(List<String> to, String object, String text){
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to.toArray(new String[0]));
-        message.setSubject(object);
-        message.setText(text);
-        message.setFrom(email);
-        mailSender.send(message);
+    public void sendMail(String to, String subject, String htmlContent){
+        MimeMessage message = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+            helper.setFrom(email);
+            mailSender.send(message);
+        }  catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
