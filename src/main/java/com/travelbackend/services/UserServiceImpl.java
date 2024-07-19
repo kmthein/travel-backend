@@ -138,6 +138,21 @@ public class UserServiceImpl implements UserService {
         user.setContactNumber(userDTO.getContactNumber());
         user.setAddress(userDTO.getAddress());
 
+        List<Image> imageList = new ArrayList<>();
+        for (Object img : userDTO.getImage()) {
+            if (img instanceof String) { // Ensure the img is a string before casting
+                Image image = new Image();
+                image.setUser(user);
+                image.setImgUrl((String) img);
+                imageDAO.save(image);
+                imageList.add(image);
+            } else {
+                // Handle the case where img is not a String
+                // Log an error, throw an exception, etc.
+                throw new IllegalArgumentException("Invalid image URL: " + img);
+            }
+        }
+        user.setImageList(imageList); // Update the user's image list with new images
         userDAO.update(user);
     }
 
