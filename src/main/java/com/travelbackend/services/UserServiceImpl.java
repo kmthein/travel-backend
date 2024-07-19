@@ -3,7 +3,6 @@ package com.travelbackend.services;
 import com.travelbackend.dao.ImageDAO;
 import com.travelbackend.dao.TravelPlanDAO;
 import com.travelbackend.dao.UserDAO;
-import com.travelbackend.dao.UserDAOImpl;
 import com.travelbackend.dto.*;
 import com.travelbackend.entity.*;
 import com.travelbackend.utils.ImageUtils;
@@ -11,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,8 +29,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         List<User> userList = userDAO.findAll();
-        for(User u: userList){
-            List<Image>filteredImages = ImageUtils.filterNonDeleteImages(u.getImageList());
+        for (User u : userList) {
+            List<Image> filteredImages = ImageUtils.filterNonDeleteImages(u.getImageList());
             u.setImageList(filteredImages);
         }
         return userList;
@@ -64,18 +65,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseDTO updateUser(User user, int id, List<String> imgUrls, List<Integer> deleteImg) {
         User tempUser = userDAO.findUserById(id);
-        if(deleteImg != null){
-            for(int deleteId : deleteImg){
+        if (deleteImg != null) {
+            for (int deleteId : deleteImg) {
                 Image tempImg = imageDAO.findImageById(deleteId);
-                if(tempImg != null){
+                if (tempImg != null) {
                     tempImg.setDelete(true);
                     imageDAO.update(tempImg);
                 }
             }
         }
-        if(imgUrls != null){
+        if (imgUrls != null) {
             List<Image> imageList = new ArrayList<>();
-            for(String img: imgUrls){
+            for (String img : imgUrls) {
                 Image image = new Image();
                 image.setImgUrl(img);
                 image.setUser(user);
@@ -98,11 +99,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseDTO deleteById(int id) {
         User user = userDAO.findUserById(id);
-        if(user != null) {
+        if (user != null) {
             user.setDelete(true);
         }
-        List<Image> images = imageDAO.findImageByTypeId("user",id);
-        for(Image i : images){
+        List<Image> images = imageDAO.findImageByTypeId("user", id);
+        for (Image i : images) {
             i.setDelete(true);
             imageDAO.update(i);
         }
@@ -114,7 +115,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> getAllNormalUsers() {
         List<User> users = userDAO.findByNormalUser();
         List<UserDTO> usersList = new ArrayList();
-        for(User user : users){
+        for (User user : users) {
             UserDTO userDTO = new UserDTO();
             userDTO.setId(user.getId());
             userDTO.setUsername(user.getUsername());
@@ -130,7 +131,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUser(UserDTO userDTO) {
+    public UserDTO editUser(UserDTO userDTO) {
         User user = userDAO.findUserById(userDTO.getId());
 
         user.setUsername(userDTO.getUsername());
@@ -138,22 +139,48 @@ public class UserServiceImpl implements UserService {
         user.setContactNumber(userDTO.getContactNumber());
         user.setAddress(userDTO.getAddress());
 
-        List<Image> imageList = new ArrayList<>();
-        for (Object img : userDTO.getImage()) {
-            if (img instanceof String) { // Ensure the img is a string before casting
-                Image image = new Image();
-                image.setUser(user);
-                image.setImgUrl((String) img);
-                imageDAO.save(image);
-                imageList.add(image);
-            } else {
-                // Handle the case where img is not a String
-                // Log an error, throw an exception, etc.
-                throw new IllegalArgumentException("Invalid image URL: " + img);
+        // Retrieve the current images of the user
+        List<Image> currentImageList = new ArrayList<>();
+        for (Image img : user.getImageList()) {
+            if (!img.isDelete()) {
+                currentImageList.add(img);
             }
         }
-        user.setImageList(imageList); // Update the user's image list with new images
+
+        if (userDTO.getImage() != null && !userDTO.getImage().isEmpty()) {
+            // Process new images
+            List<Image> newImages = new ArrayList<>();
+            for (Object img : userDTO.getImage()) {
+                if (img instanceof String) { // Ensure the img is a string before casting
+                    Image image = new Image();
+                    image.setUser(user);
+                    image.setImgUrl((String) img);
+                    newImages.add(image);
+                } else {
+                    throw new IllegalArgumentException("Invalid image URL: " + img);
+                }
+            }
+            user.setImageList(newImages); // Update the user's image list with new images
+            userDTO.setImage(newImages);
+
+            // Mark existing images for deletion if they are not in the new list
+            Set<String> newImageUrls = (Set<String>) new HashSet<>(userDTO.getImage());
+            for (Image img : currentImageList) {
+                if (!newImageUrls.contains(img.getImgUrl())) {
+                    img.setDelete(true);
+                    img.setUser(user);
+                    imageDAO.update(img);
+                }
+            }
+        } else {
+            // If no new images, keep the existing images as they are
+            user.setImageList(currentImageList);
+            userDTO.setImage(currentImageList);
+        }
+
+        // Update the user entity
         userDAO.update(user);
+        return userDTO;
     }
 
     @Override

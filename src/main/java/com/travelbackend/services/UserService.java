@@ -20,7 +20,7 @@ public interface UserService {
 
     List<UserDTO> getAllNormalUsers();
 
-    void editUser(UserDTO userDTO);
+    UserDTO editUser(UserDTO userDTO);
 
     List<TravelPlanDTO> getTravelPlanByUserId(int userId);
 }
