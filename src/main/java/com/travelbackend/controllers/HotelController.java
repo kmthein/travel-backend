@@ -3,6 +3,7 @@ package com.travelbackend.controllers;
 import com.travelbackend.dto.FindHotelDTO;
 import com.travelbackend.dto.HotelDTO;
 import com.travelbackend.dto.HotelListDTO;
+import com.travelbackend.dto.RoomDTO;
 import com.travelbackend.entity.Hotel;
 import com.travelbackend.services.HotelService;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +61,11 @@ public class HotelController {
     public ResponseEntity<List<HotelDTO>> getAllAvailableHotels(FindHotelDTO findHotelDTO){
         System.out.println(findHotelDTO);
         return ResponseEntity.ok(hotelService.getAllAvailableHotels(findHotelDTO));
+    }
+
+    @GetMapping("/{id}/room")
+    public ResponseEntity<List<RoomDTO>> getRoomByHotelId(@PathVariable int id) throws Exception {
+        return ResponseEntity.ok(hotelService.getRoomByHotelId(id));
     }
 
 }

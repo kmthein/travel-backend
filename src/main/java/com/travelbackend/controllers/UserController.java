@@ -2,6 +2,7 @@ package com.travelbackend.controllers;
 
 
 import com.travelbackend.dto.ResponseDTO;
+import com.travelbackend.dto.TravelPlanDTO;
 import com.travelbackend.dto.UserDTO;
 import com.travelbackend.entity.User;
 import com.travelbackend.exception.ResourceNotFoundException;
@@ -58,6 +59,17 @@ public class UserController {
     public ResponseEntity<?> updateUser(@ModelAttribute User user,@PathVariable int id, @RequestParam(value = "img_urls", required = false) List<String> imgUrls,@RequestParam(value = "delete_ids", required = false) List<Integer> deleteImg){
         userService.updateUser(user,id,imgUrls,deleteImg);
         return  new ResponseEntity<>("User Updated",HttpStatus.OK);
+    }
+
+    @PutMapping("/user/edit/{id}")
+    public ResponseEntity<?> editUser(@ModelAttribute UserDTO userDTO){
+        userService.editUser(userDTO);
+        return  new ResponseEntity<>("User Updated",HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}/travel-plan")
+    public List<TravelPlanDTO> getTravelPlanByUserId(@PathVariable int id){
+        return userService.getTravelPlanByUserId(id);
     }
 
     @DeleteMapping("/user/{id}")

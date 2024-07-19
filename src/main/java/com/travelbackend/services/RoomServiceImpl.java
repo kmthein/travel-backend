@@ -191,4 +191,75 @@ public class RoomServiceImpl implements RoomService{
         return roomDTO;
     }
 
+    @Override
+    public ResponseDTO editRoom(RoomDTO roomDTO, int id) throws Exception {
+        Room room = roomDAO.findRoomById(id);
+
+        //Room Type
+        String roomType = roomDTO.getRoomType();
+        if(roomType == null) {
+            throw new Exception("Room Type is required");
+        }
+        room.setRoomType(roomType);
+
+        //Valid Room
+        Integer validRoom = roomDTO.getValidRoom();
+        if(validRoom == null) {
+            throw new Exception("Valid Room is required");
+        }
+        room.setValidRoom(validRoom);
+
+        //Room Price
+        Integer roomPrice = roomDTO.getRoomPrice();
+        if(roomPrice == null) {
+            throw new Exception("Room Price is required");
+        }
+        room.setRoomPrice(roomPrice);
+
+        //Hotel
+        Integer hotelId = roomDTO.getHotelId();
+        if(hotelId == null) {
+            throw new Exception("Hotel ID is required");
+        }
+        Hotel h = hotelDAO.findHotelById(roomDTO.getHotelId());
+        room.setHotel(h);
+
+        //Image
+        List<String> imgUrlList = roomDTO.getImgUrlList();
+
+        List<Image> oldImgList = room.getImage();
+
+
+        if(!imgUrlList.isEmpty()){
+
+            List<String> oldImgUrlList = new ArrayList<>();
+            for (Image img:oldImgList) {
+                oldImgUrlList.add(img.getImgUrl());
+                if(!imgUrlList.contains(img.getImgUrl())){
+                    img.setDelete(true);
+                } else {
+                    img.setDelete(false);
+                }
+            }
+
+            for (String s: imgUrlList) {
+                if(!oldImgUrlList.contains(s)) {
+                    Image image = new Image();
+                    image.setRoom(room);
+                    image.setImgUrl(s);
+
+                    imageDAO.save(image);
+
+                    oldImgList.add(image);
+                }
+            }
+            room.setImage(oldImgList);
+        }
+
+        roomDAO.save(room);
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setMessage("New Room Created Successfully");
+        return responseDTO;
+    }
+
 }

@@ -294,6 +294,29 @@ public class HotelServiceImpl implements HotelService {
         return filteredList;
     }
 
+    @Override
+    public List<RoomDTO> getRoomByHotelId(int id) {
+        Hotel hotel = hotelDAO.findHotelById(id);
+        List<RoomDTO> roomDTOList = hotel.getRoomList().stream().map(
+                (r) -> {
+                    RoomDTO roomDTO = new RoomDTO();
+                    roomDTO.setId(r.getId());
+                    roomDTO.setRoomType(r.getRoomType());
+                    roomDTO.setRoomPrice(r.getRoomPrice());
+                    roomDTO.setValidRoom(r.getValidRoom());
+                    roomDTO.setHotelId(r.getHotel().getId());
+
+                    List<Image> imgList = r.getImage().stream().filter( (i) -> !i.isDelete()).toList();
+                    List<String> imgUrlList = imgList.stream().map(Image::getImgUrl).toList();
+                    roomDTO.setImgUrlList(imgUrlList);
+
+                    return roomDTO;
+                }
+        ).toList();
+
+        return roomDTOList;
+    }
+
     private HotelDTO getHotelDTO(Hotel h) {
         HotelDTO hotelDTO = new HotelDTO();
         hotelDTO.setId(h.getId());

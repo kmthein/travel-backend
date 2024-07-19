@@ -1,12 +1,11 @@
 package com.travelbackend.services;
 
 import com.travelbackend.dao.ImageDAO;
+import com.travelbackend.dao.TravelPlanDAO;
 import com.travelbackend.dao.UserDAO;
 import com.travelbackend.dao.UserDAOImpl;
-import com.travelbackend.dto.ResponseDTO;
-import com.travelbackend.dto.UserDTO;
-import com.travelbackend.entity.Image;
-import com.travelbackend.entity.User;
+import com.travelbackend.dto.*;
+import com.travelbackend.entity.*;
 import com.travelbackend.utils.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +21,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ImageDAO imageDAO;
+
+    @Autowired
+    private TravelPlanDAO travelPlanDAO;
 
     @Override
     public List<User> getAllUsers() {
@@ -125,5 +127,110 @@ public class UserServiceImpl implements UserService {
             usersList.add(userDTO);
         }
         return usersList;
+    }
+
+    @Override
+    public void editUser(UserDTO userDTO) {
+        User user = userDAO.findUserById(userDTO.getId());
+
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setContactNumber(userDTO.getContactNumber());
+        user.setAddress(userDTO.getAddress());
+
+        userDAO.update(user);
+    }
+
+    @Override
+    public List<TravelPlanDTO> getTravelPlanByUserId(int userId) {
+
+        List<TravelPlanDTO> travelPlanDTOList = new ArrayList<>();
+        List<TravelPlan> travelPlanList = travelPlanDAO.findAll();
+
+
+        for(TravelPlan t : travelPlanList) {
+            if(t.getUser().getId() == userId){
+                TravelPlanDTO travelPlanDTO = new TravelPlanDTO();
+                travelPlanDTO.setId(t.getId());
+                travelPlanDTO.setStartDate(t.getStartDate());
+                travelPlanDTO.setEndDate(t.getEndDate());
+                travelPlanDTO.setTotalPrice(t.getTotalPrice());
+                travelPlanDTO.setStatus(t.getStatus());
+
+                if(t.getBusClass() != null && t.getBusSchedule() != null ) {
+                    BusClassDTO busClassDTO = new BusClassDTO();
+                    BusClass busClass = t.getBusClass();
+
+                    busClassDTO.setBusClassId(busClass.getId());
+                    busClassDTO.setBusClassName(busClass.getName());
+                    busClassDTO.setBusServiceId(busClass.getBusService().getId());
+                    List<String> imgUrlList = busClass.getBusService().getImage().stream().map(Image::getImgUrl).toList();
+                    busClassDTO.setBusServiceImgUrl(imgUrlList);
+                    busClassDTO.setBusServiceName(busClass.getBusService().getName());
+                    busClassDTO.setPrice(busClass.getPrice());
+
+                    travelPlanDTO.setBusClassDTO(busClassDTO);
+
+                    BusScheduleDTO busScheduleDTO = new BusScheduleDTO();
+                    BusSchedule busSchedule = t.getBusSchedule();
+
+                    busScheduleDTO.setDeparturePlaceName(busSchedule.getDeparturePlace().getName());
+                    busScheduleDTO.setArrivalPlaceName(busSchedule.getArrivalPlace().getName());
+                    busScheduleDTO.setDistance(busSchedule.getDistance());
+                    busScheduleDTO.setDepartureDate(busSchedule.getDate());
+                    busScheduleDTO.setDepartureTime(busSchedule.getDepartureTime());
+                    busScheduleDTO.setArrivalTime(busSchedule.getArrivalTime());
+
+                    travelPlanDTO.setBusScheduleDTO(busScheduleDTO);
+
+                }
+                if(t.getFlightClass() != null && t.getFlightSchedule() != null ) {
+                    FlightClassDTO flightClassDTO = new FlightClassDTO();
+                    FlightClass flightClass = t.getFlightClass();
+
+                    flightClassDTO.setFlightClassId(flightClass.getId());
+                    flightClassDTO.setFlightClassName(flightClass.getName());
+                    flightClassDTO.setAirlineId((flightClass.getAirline().getId()));
+                    List<String> imgUrlList = flightClass.getAirline().getImage().stream().map(Image::getImgUrl).toList();
+                    flightClassDTO.setAirlineImgUrl(imgUrlList);
+                    flightClassDTO.setAirlineName(flightClass.getAirline().getName());
+                    flightClassDTO.setPrice(flightClass.getPrice());
+
+                    travelPlanDTO.setFlightClassDTO(flightClassDTO);
+
+                    FlightScheduleDTO flightScheduleDTO = new FlightScheduleDTO();
+                    FlightSchedule flightSchedule = t.getFlightSchedule();
+
+                    flightScheduleDTO.setDeparturePlaceName(flightSchedule.getDeparturePlace().getName());
+                    flightScheduleDTO.setArrivalPlaceName(flightSchedule.getArrivalPlace().getName());
+                    flightScheduleDTO.setDistance(flightSchedule.getDistance());
+                    flightScheduleDTO.setDepartureDate(flightSchedule.getDate());
+                    flightScheduleDTO.setDepartureTime(flightSchedule.getDepartureTime());
+                    flightScheduleDTO.setArrivalTime(flightSchedule.getArrivalTime());
+
+                    travelPlanDTO.setFlightScheduleDTO(flightScheduleDTO);
+
+                }
+
+                if((t.getAccommodation() != null)){
+                    AccommodationDTO accommodationDTO = new AccommodationDTO();
+                    Accommodation accommodation = t.getAccommodation();
+
+                    accommodationDTO.setCheckInDate(accommodation.getCheckIn());
+                    accommodationDTO.setCheckOutDate(accommodation.getCheckOut());
+                    accommodationDTO.setTotalPrice(accommodation.getTotalPrice());
+                    accommodationDTO.setRoomName(accommodation.getRoom().getRoomType());
+                    accommodationDTO.setHotelName(accommodation.getRoom().getHotel().getName());
+                    accommodationDTO.setHotelImgUrl(accommodation.getRoom().getHotel().getImage().getFirst().getImgUrl());
+
+                    travelPlanDTO.setAccommodationDTO(accommodationDTO);
+                }
+
+
+                travelPlanDTOList.add(travelPlanDTO);
+            }
+        }
+
+        return travelPlanDTOList;
     }
 }
