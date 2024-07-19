@@ -20,5 +20,5 @@ public interface UserDAO {
 
     List<User> findByNormalUser();
 
-    List<String> weeklyEmailSendList();
+    List<User> weeklyEmailSendList();
 }

@@ -4,6 +4,7 @@ import com.travelbackend.dto.HotelVisitCountDTO;
 import com.travelbackend.dto.TravelTypeDTO;
 import com.travelbackend.dto.UserTravelCountDTO;
 import com.travelbackend.entity.TravelPlan;
+import com.travelbackend.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
@@ -57,11 +58,11 @@ public class TravelPlanDAOImpl implements TravelPlanDAO{
     }
 
     @Override
-    public List<String> sendMessageUser() {
-        LocalDate threeDaysAgo = LocalDate.now().minusDays(3);
-        TypedQuery<String> query = entityManager.createQuery(
-                "SELECT t.user.email FROM TravelPlan t WHERE t.startDate = :startDate",
-                String.class
+    public List<User> sendMessageUser() {
+        LocalDate threeDaysAgo = LocalDate.now().plusDays(1);
+        TypedQuery<User> query = entityManager.createQuery(
+                "SELECT t.user FROM TravelPlan t WHERE t.startDate = :startDate and t.user.role='USER'",
+                User.class
         );
         query.setParameter("startDate", threeDaysAgo);
 

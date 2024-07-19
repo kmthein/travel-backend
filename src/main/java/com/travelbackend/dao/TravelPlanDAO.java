@@ -4,6 +4,7 @@ import com.travelbackend.dto.HotelVisitCountDTO;
 import com.travelbackend.dto.TravelTypeDTO;
 import com.travelbackend.dto.UserTravelCountDTO;
 import com.travelbackend.entity.TravelPlan;
+import com.travelbackend.entity.User;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface TravelPlanDAO {
 
     void delete(int travelPlanId);
 
-    List<String> sendMessageUser();
+    List<User> sendMessageUser();
 
     List<UserTravelCountDTO> countTravelsByUser();
 
