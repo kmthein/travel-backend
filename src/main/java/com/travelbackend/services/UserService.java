@@ -1,6 +1,7 @@
 package com.travelbackend.services;
 
 import com.travelbackend.dto.ResponseDTO;
+import com.travelbackend.dto.TravelPlanDTO;
 import com.travelbackend.dto.UserDTO;
 import com.travelbackend.entity.User;
 
@@ -18,4 +19,8 @@ public interface UserService {
     ResponseDTO deleteById(int id);
 
     List<UserDTO> getAllNormalUsers();
+
+    void editUser(UserDTO userDTO);
+
+    List<TravelPlanDTO> getTravelPlanByUserId(int userId);
 }
