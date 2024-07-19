@@ -1,5 +1,8 @@
 package com.travelbackend.dao;
 
+import com.travelbackend.dto.HotelVisitCountDTO;
+import com.travelbackend.dto.TravelTypeDTO;
+import com.travelbackend.dto.UserTravelCountDTO;
 import com.travelbackend.entity.TravelPlan;
 
 import java.util.List;
@@ -17,4 +20,16 @@ public interface TravelPlanDAO {
     void delete(int travelPlanId);
 
     List<String> sendMessageUser();
+
+    List<UserTravelCountDTO> countTravelsByUser();
+
+    TravelTypeDTO getTravelByPercent();
+
+    List<HotelVisitCountDTO> getTopHotelVisit();
+
+    List<Long> totalIncomeByMonth(int year);
+
+    List<Long> newMemberByMonth(int year);
+
+    List<Long> getTotalTravelCountByMonth(int year);
 }

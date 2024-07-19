@@ -4,8 +4,7 @@ import com.travelbackend.dao.AccommodationDAO;
 import com.travelbackend.dao.RoomDAO;
 import com.travelbackend.dao.TravelPlanDAO;
 import com.travelbackend.dao.UserDAO;
-import com.travelbackend.dto.PlanDTO;
-import com.travelbackend.dto.ResponseDTO;
+import com.travelbackend.dto.*;
 import com.travelbackend.entity.Accommodation;
 import com.travelbackend.entity.Hotel;
 import com.travelbackend.entity.TravelPlan;
@@ -14,10 +13,8 @@ import com.travelbackend.dao.*;
 import com.travelbackend.entity.*;
 import com.travelbackend.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,5 +129,35 @@ public class TravelPlanServiceImpl implements TravelPlanService {
             plans.add(planDTO);
         }
         return plans;
+    }
+
+    @Override
+    public List<UserTravelCountDTO> countTravelsByUser() {
+        return travelPlanDAO.countTravelsByUser();
+    }
+
+    @Override
+    public TravelTypeDTO getTravelByPercent() {
+        return travelPlanDAO.getTravelByPercent();
+    }
+
+    @Override
+    public List<HotelVisitCountDTO> getTopHotelVisit() {
+        return travelPlanDAO.getTopHotelVisit();
+    }
+
+    @Override
+    public List<Long> totalIncomeByMonth(int year) {
+        return travelPlanDAO.totalIncomeByMonth(year);
+    }
+
+    @Override
+    public List<Long> newMemberByMonth(int year) {
+        return travelPlanDAO.newMemberByMonth(year);
+    }
+
+    @Override
+    public List<Long> getTotalTravelCountByMonth(int year) {
+        return travelPlanDAO.getTotalTravelCountByMonth(year);
     }
 }

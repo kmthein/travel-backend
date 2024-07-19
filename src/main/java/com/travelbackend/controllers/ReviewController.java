@@ -1,5 +1,6 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.ReviewDTO;
 import com.travelbackend.entity.Review;
 import com.travelbackend.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class ReviewController {
     }
 
     @GetMapping("/review")
-    public List<Review> findAllReview(){
+    public List<ReviewDTO> findAllReview(){
         return reviewService.findAllReview();
     }
 
