@@ -33,7 +33,6 @@ public class BusSchedule extends BaseEntity{
             CascadeType.PERSIST, CascadeType.REFRESH
     })
     @JoinColumn(name = "departure_place")
-
     private Destination departurePlace;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {

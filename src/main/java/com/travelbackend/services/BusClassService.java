@@ -17,4 +17,7 @@ public interface BusClassService {
     void deleteBusClass(int id);
 
     List<BusClass> findBusClassByBusServiceId(int busServiceId);
+
+
+    List<BusClass> getBusClassByBus(int id);git
 }

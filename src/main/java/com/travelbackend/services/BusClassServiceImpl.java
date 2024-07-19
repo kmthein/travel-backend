@@ -74,6 +74,11 @@ public class BusClassServiceImpl implements BusClassService{
         List<BusClass> busClassList = busClassDAO.findAll();
         return busClassList.stream().filter(c -> c.getBusService().getId() == busServiceId).toList();
     }
+
+    @Override
+    public List<BusClass> getBusClassByBus(int id) {
+        return busClassDAO.getBusClassByBus(id);
+    }
 }
 
 

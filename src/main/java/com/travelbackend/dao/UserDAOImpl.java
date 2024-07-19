@@ -4,6 +4,7 @@ import com.travelbackend.entity.User;
 import com.travelbackend.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -65,7 +66,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> findByNormalUser() {
-        TypedQuery<User> query = entityManager.createQuery("from User u where u.role='USER'", User.class);
+        TypedQuery<User> query = entityManager.createQuery("from User u where u.role='USER' and u.isDelete=false ", User.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<User> weeklyEmailSendList() {
+        TypedQuery<User> query = entityManager.createQuery("FROM User u WHERE u.emailReceive = true and u.role='USER' and u.isDelete=false ", User.class);
         return query.getResultList();
     }
 }

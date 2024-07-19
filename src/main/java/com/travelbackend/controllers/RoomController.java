@@ -51,6 +51,12 @@ public class RoomController {
         return new ResponseEntity<>("Room Updated",HttpStatus.OK);
     }
 
+    @PutMapping("/room/edit/{id}")
+    public ResponseEntity<?> editRoom (@ModelAttribute RoomDTO roomDTO, @PathVariable int id) throws Exception {
+        roomService.editRoom(roomDTO, id);
+        return new ResponseEntity<>("Room Updated",HttpStatus.OK);
+    }
+
     @DeleteMapping("/room/{id}")
     public ResponseEntity<?> deleteroomById(@PathVariable int id){
         ResponseDTO responseDTO = roomService.deleteById(id);

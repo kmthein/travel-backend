@@ -19,4 +19,6 @@ public interface UserDAO {
     void delete(int userId);
 
     List<User> findByNormalUser();
+
+    List<User> weeklyEmailSendList();
 }

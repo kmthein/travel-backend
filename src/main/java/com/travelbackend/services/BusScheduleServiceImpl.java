@@ -84,13 +84,14 @@ public class BusScheduleServiceImpl implements BusScheduleService {
         for (BusSchedule bs : busScheduleList) {
             TransportScheduleDTO bst = new TransportScheduleDTO();
             bst.setId(bs.getId());
+            bst.setTransportId(bs.getBusService().getId());
             bst.setName(bs.getBusService().getName());
             bst.setDate(bs.getDate());
             bst.setArrivalTime(bs.getArrivalTime());
             bst.setDepartureTime(bs.getDepartureTime());
             bst.setArrivalPlace(bs.getArrivalPlace().getName());
             bst.setDeparturePlace(bs.getDeparturePlace().getName());
-            bst.setAriLineImg(bs.getBusService().getImage());
+            bst.setImg(bs.getBusService().getImage());
             transportScheduleDTOList.add(bst);
         }
         return transportScheduleDTOList;
@@ -104,9 +105,6 @@ public class BusScheduleServiceImpl implements BusScheduleService {
             List<BusServiceDTO> filteredList = new ArrayList<>();
 
             for(BusSchedule b : busScheduleList) {
-                System.out.println(b.getDate());
-                System.out.println(busSchDTO.getDepartureDate());
-
                 if(b.getDeparturePlace().getId() == busSchDTO.getDeparturePlaceId()
                         && b.getArrivalPlace().getId() == busSchDTO.getArrivalPlaceId()
                         && b.getDate().equals(busSchDTO.getDepartureDate())
@@ -149,7 +147,8 @@ public class BusScheduleServiceImpl implements BusScheduleService {
 
                         if(travelPlanList != null) {
                             for(TravelPlan t : travelPlanList){
-                                if(t.getStartDate().equals(busSchDTO.getDepartureDate())
+                                if(t.getStartDate().equals(busSchDTO.getDepartureDate()) &&
+                                        t.getBusClass() != null
                                         && t.getBusClass().getId() == busClass.getId()
                                 ){
                                     busClassDTO.setAvailableSeat(busClassDTO.getAvailableSeat() -1 );

@@ -60,8 +60,19 @@ public class FlightScheduleDAOImpl implements FlightScheduleDAO {
 
     @Override
     public List<FlightSchedule> availableFlight() {
-        TypedQuery<FlightSchedule> query = entityManager.createQuery("from FlightSchedule f where f.isDelete=false and f.date >=:date", FlightSchedule.class);
+        TypedQuery<FlightSchedule> query = entityManager.createQuery("from FlightSchedule f where f.isDelete=false and f.date >=:date ORDER BY f.date", FlightSchedule.class);
         query.setParameter("date", LocalDate.now());
         return query.getResultList();
+    }
+
+    @Override
+    public List<FlightSchedule> findbyDestination(int desId) {
+        TypedQuery<FlightSchedule> query = entityManager.createQuery("from FlightSchedule f where f.arrivalPlace.id=:desId and f.isDelete=false ", FlightSchedule.class);
+        query.setParameter("desId",desId);
+        try {
+            return query.getResultList();
+        } catch (NoResultException e) {
+            throw new ResourceNotFoundException("The FlightSchedule with ID " + desId + " was not found");
+        }
     }
 }

@@ -36,9 +36,9 @@ public class FlightSchedule extends BaseEntity {
             CascadeType.PERSIST, CascadeType.REFRESH
     })
     @JoinColumn(name = "departure_place")
-
     private Destination departurePlace;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+
+    @ManyToOne(cascade = {
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH
     })

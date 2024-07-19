@@ -1,5 +1,6 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.DestinationDTO;
 import com.travelbackend.dto.ResponseDTO;
 import com.travelbackend.entity.Destination;
 import com.travelbackend.exception.ResourceNotFoundException;
@@ -19,9 +20,6 @@ public class DestinationController {
     @Autowired
     private DestinationService destinationService;
 
-    public DestinationService getDestinationService() {
-        return destinationService;
-    }
 
     @GetMapping("/destination")
     public ResponseEntity<?> getAllDestinations() {
@@ -36,7 +34,7 @@ public class DestinationController {
 
     @GetMapping("/destination/{id}")
     public ResponseEntity<?> getDestinationById(@PathVariable int id) {
-        Destination destination = destinationService.getDestinationById(id);
+        DestinationDTO destination = destinationService.getDestinationById(id);
         if (destination == null) {
             throw new ResourceNotFoundException("Destination id: " + id + " is not found.");
         }
@@ -65,5 +63,16 @@ public class DestinationController {
     public ResponseEntity<?> deleteDestinationById(@PathVariable int id) {
         ResponseDTO res = destinationService.deleteById(id);
         return new ResponseEntity<>(res.getMessage(), HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/destination/all")
+    public ResponseEntity<?> getAll() {
+        List<DestinationDTO> destinationList = destinationService.getDestination();
+        if (destinationList == null) {
+            ResponseDTO res = new ResponseDTO();
+            res.setMessage("Destination Not Found.");
+            return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(destinationList, HttpStatus.OK);
     }
 }

@@ -17,4 +17,6 @@ public interface RoomService {
     ResponseDTO deleteById(int id);
 
     RoomDTO getAvailableRoom(FindRoomDTO findRoomDTO);
+
+    ResponseDTO editRoom(RoomDTO roomDTO, int id) throws Exception;
 }

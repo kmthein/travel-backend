@@ -15,6 +15,7 @@ public class UserDTO {
     private String email;
     private String contactNumber;
     private LocalDate dob;
+    private String address;
     private Role role;
     private List<?> image;
     private Boolean emailReceived;

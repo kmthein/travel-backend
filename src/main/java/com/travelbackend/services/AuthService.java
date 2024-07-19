@@ -75,8 +75,15 @@ public class AuthService {
             userDTO.setUsername(existUser.getUsername());
             userDTO.setEmail(existUser.getEmail());
             userDTO.setContactNumber(existUser.getContactNumber());
+            userDTO.setAddress(existUser.getAddress());
             userDTO.setDob(existUser.getDob());
-            userDTO.setImage(existUser.getImageList());
+            List<Image> nonDeleteImg = new ArrayList<>();
+            for (Image img : existUser.getImageList()) {
+                if (img.isDelete() == false) {
+                    nonDeleteImg.add(img);
+                }
+            }
+            userDTO.setImage(nonDeleteImg);
             userDTO.setRole(existUser.getRole());
             userDTO.setEmailReceived(existUser.isEmailReceive());
             res.setUserDetails(userDTO);

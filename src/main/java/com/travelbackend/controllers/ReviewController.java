@@ -1,5 +1,6 @@
 package com.travelbackend.controllers;
 
+import com.travelbackend.dto.ReviewDTO;
 import com.travelbackend.entity.Review;
 import com.travelbackend.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,13 @@ public class ReviewController {
     }
 
     @PostMapping("/review")
-    public ResponseEntity<?> createReview(@ModelAttribute Review review,@RequestParam int userId,@RequestParam int destinationId){
-        reviewService.saveReview(review,userId,destinationId);
+    public ResponseEntity<?> createReview(@ModelAttribute Review review,@RequestParam int userId){
+        reviewService.saveReview(review, userId);
         return ResponseEntity.ok("Inserted Review!");
     }
 
     @GetMapping("/review")
-    public List<Review> findAllReview(){
+    public List<ReviewDTO> findAllReview(){
         return reviewService.findAllReview();
     }
 
@@ -37,8 +38,8 @@ public class ReviewController {
     }
 
     @PutMapping("/review/{id}")
-    public ResponseEntity<?> updateReview(@ModelAttribute Review review,@PathVariable int id,@RequestParam int userId,@RequestParam int destinationId){
-        reviewService.updateReview(review,id,userId,destinationId);
+    public ResponseEntity<?> updateReview(@ModelAttribute Review review,@PathVariable int id,@RequestParam int userId){
+        reviewService.updateReview(review,id,userId);
         return ResponseEntity.ok("Review Updated! ");
     }
 

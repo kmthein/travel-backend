@@ -65,6 +65,13 @@ public class ImageDAOImpl implements ImageDAO {
     }
 
     @Override
+    public List<Image> findByDestinationId(int desId) {
+        TypedQuery<Image> query = entityManager.createQuery("from Image i where i.destination.id=:desId and i.isDelete =false ",Image.class);
+        query.setParameter("desId",desId);
+        return  query.getResultList();
+    }
+
+    @Override
     public List<Image> findImageByTypeId(String type, int id) {
         TypedQuery<Image> query = entityManager.createQuery("SELECT i FROM Image i WHERE i." + type + ".id = :id AND i.isDelete = false", Image.class);
         query.setParameter("id", id);
