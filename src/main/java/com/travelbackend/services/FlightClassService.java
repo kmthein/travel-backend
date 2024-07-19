@@ -1,0 +1,22 @@
+package com.travelbackend.services;
+
+import com.travelbackend.entity.AirLine;
+import com.travelbackend.entity.FlightClass;
+
+import java.util.List;
+
+public interface FlightClassService {
+
+    void saveFlightClass(FlightClass flightClass, int airlineId);
+
+    List<FlightClass> findAllFlightClass();
+
+    FlightClass findFlightClassById(int flightClassId);
+
+    void updateFlightClass(FlightClass flightClass,int id,int airlineId);
+
+    void deleteFlightClass(int flightClassId);
+
+    List<FlightClass> getFlightClassByAirline(int airlineId);
+    List<FlightClass> findFlightClassByAirlineId(int id);
+}
