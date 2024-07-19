@@ -63,8 +63,8 @@ public class UserController {
 
     @PutMapping("/user/edit/{id}")
     public ResponseEntity<?> editUser(@ModelAttribute UserDTO userDTO){
-        userService.editUser(userDTO);
-        return  new ResponseEntity<>("User Updated",HttpStatus.OK);
+        UserDTO user = userService.editUser(userDTO);
+        return  new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/user/{id}/travel-plan")
