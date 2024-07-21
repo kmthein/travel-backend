@@ -1,11 +1,6 @@
 package com.travelbackend.controllers;
 
 import com.travelbackend.entity.BusClass;
-<<<<<<< HEAD
-=======
-import com.travelbackend.entity.BusService;
-import com.travelbackend.entity.FlightClass;
->>>>>>> c004668c37c5ace074a9429728c70204dff0b2d3
 import com.travelbackend.services.BusClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
