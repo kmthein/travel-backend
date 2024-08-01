@@ -1,12 +1,18 @@
 package com.travelbackend.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Table(name = "accommodation")
 public class Accommodation extends BaseEntity{
     @Id
@@ -15,10 +21,10 @@ public class Accommodation extends BaseEntity{
     private int id;
 
     @Column(name = "check_in")
-    private LocalDateTime checkIn;
+    private LocalDate checkIn;
 
     @Column(name = "check_out")
-    private LocalDateTime checkOut;
+    private LocalDate checkOut;
 
     @Column(name = "total_person")
     private int totalPerson;
@@ -29,53 +35,5 @@ public class Accommodation extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getCheckIn() {
-        return checkIn;
-    }
-
-    public void setCheckIn(LocalDateTime checkIn) {
-        this.checkIn = checkIn;
-    }
-
-    public LocalDateTime getCheckOut() {
-        return checkOut;
-    }
-
-    public void setCheckOut(LocalDateTime checkOut) {
-        this.checkOut = checkOut;
-    }
-
-    public int getTotalPerson() {
-        return totalPerson;
-    }
-
-    public void setTotalPerson(int totalPerson) {
-        this.totalPerson = totalPerson;
-    }
-
-    public int getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(int totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
 }
 

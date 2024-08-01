@@ -3,6 +3,7 @@ package com.travelbackend.controllers;
 import com.travelbackend.dao.BusClassDAO;
 import com.travelbackend.entity.BusClass;
 import com.travelbackend.entity.BusService;
+import com.travelbackend.entity.FlightClass;
 import com.travelbackend.services.BusClassService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,11 @@ public class BusClassController {
     public String deleteBusClass(@PathVariable int id){
         busClassService.deleteBusClass(id);
         return "Delete Successful";
+    }
+
+    @GetMapping("/bus-class/{id}/class")
+    public List<BusClass> getFlightClassByAirline(@PathVariable int id){
+        return busClassService.getBusClassByBus(id);
     }
 
 }

@@ -12,6 +12,8 @@ import java.util.List;
 @ToString
 public class HotelDTO {
 
+    private int id;
+
     private String name;
 
     private String description;
@@ -20,6 +22,12 @@ public class HotelDTO {
 
     private Integer destinationId;
 
+    private String location;
+
     private List<String> imgUrlList;
+
+    private boolean hasRoom;
+
+    private List<RoomDTO> availableRoomList;
 
 }

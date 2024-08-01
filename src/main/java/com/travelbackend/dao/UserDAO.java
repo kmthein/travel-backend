@@ -14,5 +14,11 @@ public interface UserDAO {
 
     void update(User user);
 
+    User findByEmail(String email);
+
     void delete(int userId);
+
+    List<User> findByNormalUser();
+
+    List<User> weeklyEmailSendList();
 }

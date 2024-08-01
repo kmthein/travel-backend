@@ -1,6 +1,8 @@
 package com.travelbackend.services;
 
 import com.travelbackend.dto.ResponseDTO;
+import com.travelbackend.dto.TravelPlanDTO;
+import com.travelbackend.dto.UserDTO;
 import com.travelbackend.entity.User;
 
 import java.util.List;
@@ -15,4 +17,10 @@ public interface UserService {
     ResponseDTO updateUser(User user, int id,List<String> imgUrls,List<Integer> deleteImg);
 
     ResponseDTO deleteById(int id);
+
+    List<UserDTO> getAllNormalUsers();
+
+    UserDTO editUser(UserDTO userDTO);
+
+    List<TravelPlanDTO> getTravelPlanByUserId(int userId);
 }

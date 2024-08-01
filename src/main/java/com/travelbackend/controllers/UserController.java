@@ -2,6 +2,8 @@ package com.travelbackend.controllers;
 
 
 import com.travelbackend.dto.ResponseDTO;
+import com.travelbackend.dto.TravelPlanDTO;
+import com.travelbackend.dto.UserDTO;
 import com.travelbackend.entity.User;
 import com.travelbackend.exception.ResourceNotFoundException;
 import com.travelbackend.services.UserService;
@@ -12,9 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
-@CrossOrigin
+
 public class UserController {
 
     @Autowired
@@ -24,6 +27,12 @@ public class UserController {
     public ResponseEntity<?> createNewUser(@ModelAttribute User user, @RequestParam(value = "img_urls",required = false) List<String> imgUrls){
         ResponseDTO res = userService.addNewUser(user,imgUrls);
         return new ResponseEntity<>(res.getMessage(), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/user/normal-user")
+    public ResponseEntity<?> getNormalUsers(){
+        List<UserDTO> normalUserList = userService.getAllNormalUsers();
+        return new ResponseEntity<>(normalUserList,HttpStatus.OK);
     }
 
     @GetMapping("/user")
@@ -50,6 +59,17 @@ public class UserController {
     public ResponseEntity<?> updateUser(@ModelAttribute User user,@PathVariable int id, @RequestParam(value = "img_urls", required = false) List<String> imgUrls,@RequestParam(value = "delete_ids", required = false) List<Integer> deleteImg){
         userService.updateUser(user,id,imgUrls,deleteImg);
         return  new ResponseEntity<>("User Updated",HttpStatus.OK);
+    }
+
+    @PutMapping("/user/edit/{id}")
+    public ResponseEntity<?> editUser(@ModelAttribute UserDTO userDTO){
+        UserDTO user = userService.editUser(userDTO);
+        return  new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}/travel-plan")
+    public List<TravelPlanDTO> getTravelPlanByUserId(@PathVariable int id){
+        return userService.getTravelPlanByUserId(id);
     }
 
     @DeleteMapping("/user/{id}")

@@ -15,4 +15,8 @@ public interface BusScheduleDAO {
     void update(BusSchedule busSchedule);
 
     void delete(int busScheduleId);
+
+    public List<BusSchedule> availableBus();
+
+    public List<BusSchedule> findbyDestinationId(int desId);
 }

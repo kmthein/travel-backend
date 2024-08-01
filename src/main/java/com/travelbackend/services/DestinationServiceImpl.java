@@ -1,10 +1,9 @@
 package com.travelbackend.services;
 
-import com.travelbackend.dao.DestinationDAO;
-import com.travelbackend.dao.ImageDAO;
+import com.travelbackend.dao.*;
+import com.travelbackend.dto.DestinationDTO;
 import com.travelbackend.dto.ResponseDTO;
-import com.travelbackend.entity.Destination;
-import com.travelbackend.entity.Image;
+import com.travelbackend.entity.*;
 import com.travelbackend.utils.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +22,20 @@ public class DestinationServiceImpl implements DestinationService {
     @Autowired
     private ImageDAO imageDAO;
 
+    @Autowired
+    private BusScheduleDAO busScheduleDAO;
+
+    @Autowired
+    private FlightScheduleDAO flightScheduleDAO;
+
+    @Autowired
+    private HotelDAO hotelDAO;
+
+    @Override
+    public List<Destination> searchDestinationByKeyword(String keyword) {
+        return destinationDAO.searchByKeyword(keyword);
+    }
+
     @Override
     public List<Destination> getAllDestinations() {
         List<Destination> destinationList = destinationDAO.findAll();
@@ -34,11 +47,28 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
-    public Destination getDestinationById(int id) {
+    public DestinationDTO getDestinationById(int id) {
         Destination destination = destinationDAO.findDestinationById(id);
-        List<Image> filteredImages = ImageUtils.filterNonDeleteImages(destination.getImage());
-        destination.setImage(filteredImages);
-        return destination;
+        DestinationDTO desDTO = new DestinationDTO();
+        int desId= destination.getId();
+        desDTO.setId(destination.getId());
+        desDTO.setName(destination.getName());
+        desDTO.setCountry(destination.getCountry());
+        desDTO.setDescription(destination.getDescription());
+        desDTO.setHighlight(destination.getHighlight());
+        desDTO.setTopPlace(destination.getTopPlace());
+        if(desId != 0){
+            List<Image> img = imageDAO.findByDestinationId(desId);
+            desDTO.setImage(img);
+            List<BusSchedule> busScheduleList = busScheduleDAO.findbyDestinationId(desId);
+            desDTO.setBusArriveTo(busScheduleList);
+            List<FlightSchedule> flightScheduleList = flightScheduleDAO.findbyDestination(desId);
+            desDTO.setFlightArriveTo(flightScheduleList);
+            List<Hotel> hotelList = hotelDAO.findByDestinationId(desId);
+            desDTO.setHotelList(hotelList);
+        }
+
+        return desDTO;
     }
 
     @Override
@@ -58,6 +88,11 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
+    public ResponseDTO getDestinationJoin() {
+        return null;
+    }
+
+    @Override
     public ResponseDTO updateDestination(Destination destination, int id, List<String> imgUrls, List<Integer> deleteImgIds) {
         Destination tempDest = destinationDAO.findDestinationById(id);
         if (deleteImgIds != null) {
@@ -74,7 +109,7 @@ public class DestinationServiceImpl implements DestinationService {
             for (String img : imgUrls) {
                 Image image = new Image();
                 image.setImgUrl(img);
-                image.setDestination(destination);
+                image.setDestination(tempDest);
                 imagesList.add(image);
             }
             tempDest.setImage(imagesList);
@@ -102,4 +137,34 @@ public class DestinationServiceImpl implements DestinationService {
         destinationDAO.update(destination);
         return new ResponseDTO("Destination deleted");
     }
+
+    @Override
+    public List<DestinationDTO> getDestination() {
+        List<Destination> destinations = destinationDAO.findAll();
+        List<DestinationDTO> desDTOList = new ArrayList<>();
+        for(Destination destination : destinations){
+            int id = destination.getId();
+            DestinationDTO desDTO = new DestinationDTO();
+            desDTO.setId(destination.getId());
+            desDTO.setName(destination.getName());
+            desDTO.setCountry(destination.getCountry());
+            desDTO.setDescription(destination.getDescription());
+            desDTO.setHighlight(destination.getHighlight());
+            desDTO.setTopPlace(destination.getTopPlace());
+            if(id != 0){
+                List<Image> img = imageDAO.findByDestinationId(id);
+                desDTO.setImage(img);
+                List<BusSchedule> busScheduleList = busScheduleDAO.findbyDestinationId(id);
+                desDTO.setBusArriveTo(busScheduleList);
+                List<FlightSchedule> flightScheduleList = flightScheduleDAO.findbyDestination(id);
+                desDTO.setFlightArriveTo(flightScheduleList);
+                List<Hotel> hotelList = hotelDAO.findByDestinationId(id);
+                desDTO.setHotelList(hotelList);
+            }
+            desDTOList.add(desDTO);
+        }
+        return desDTOList;
+    }
+
+
 }

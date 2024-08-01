@@ -68,7 +68,18 @@ public class BusClassServiceImpl implements BusClassService{
         bc1.setDelete(true);
         busClassDAO.update(bc1);
         }
+
+    @Override
+    public List<BusClass> findBusClassByBusServiceId(int busServiceId) {
+        List<BusClass> busClassList = busClassDAO.findAll();
+        return busClassList.stream().filter(c -> c.getBusService().getId() == busServiceId).toList();
     }
+
+    @Override
+    public List<BusClass> getBusClassByBus(int id) {
+        return busClassDAO.getBusClassByBus(id);
+    }
+}
 
 
 

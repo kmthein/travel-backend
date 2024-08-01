@@ -15,4 +15,8 @@ public interface FlightScheduleDAO {
     void update(FlightSchedule flightSchedule);
 
     void delete(int flightScheduleId);
+
+    List<FlightSchedule> availableFlight();
+
+    List<FlightSchedule> findbyDestination(int desId);
 }

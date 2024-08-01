@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api")
+@CrossOrigin
 public class FlightClassController {
 
     private FlightClassService flightClassService;
@@ -38,8 +39,8 @@ public class FlightClassController {
     }
 
     @PutMapping("/flight-class/{id}")
-    public ResponseEntity<?> updateFlightClass(@ModelAttribute FlightClass flightClass,@PathVariable int flightClassId,@RequestParam int airlineId){
-        flightClassService.updateFlightClass(flightClass,flightClassId,airlineId);
+    public ResponseEntity<?> updateFlightClass(@ModelAttribute FlightClass flightClass,@PathVariable int id,@RequestParam int airlineId){
+        flightClassService.updateFlightClass(flightClass,id,airlineId);
         return ResponseEntity.ok("Update FlightClass");
     }
 
@@ -47,5 +48,10 @@ public class FlightClassController {
     public String deleteFlightClass(@PathVariable int id){
         flightClassService.deleteFlightClass(id);
         return "Delete flight-CLass";
+    }
+
+    @GetMapping("/flight-class/{id}/class")
+    public List<FlightClass> getFlightClassByAirline(@PathVariable int id){
+        return flightClassService.getFlightClassByAirline(id);
     }
 }

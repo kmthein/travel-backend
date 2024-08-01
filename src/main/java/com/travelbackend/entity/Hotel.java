@@ -1,5 +1,9 @@
 package com.travelbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -24,9 +28,19 @@ public class Hotel extends BaseEntity{
     @Column(name = "rating")
     private double rating;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "destination_id")
+    @JsonBackReference
     private Destination destination;
+
+    @OneToMany(mappedBy = "hotel",cascade = {
+        CascadeType.DETACH,CascadeType.MERGE,
+                CascadeType.PERSIST,CascadeType.REFRESH
+    })
+    private List<Room> roomList;
 
     @OneToMany(mappedBy = "hotel",cascade = {
             CascadeType.DETACH,CascadeType.MERGE,
@@ -72,6 +86,14 @@ public class Hotel extends BaseEntity{
 
     public void setDestination(Destination destination) {
         this.destination = destination;
+    }
+
+    public List<Room> getRoomList() {
+        return roomList;
+    }
+
+    public void setRoomList(List<Room> roomList) {
+        this.roomList = roomList;
     }
 
     public List<Image> getImage() {

@@ -23,10 +23,6 @@ public class Review extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "destination_id")
-    private Destination destination;
-
     public int getId() {
         return id;
     }
@@ -57,13 +53,5 @@ public class Review extends BaseEntity{
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Destination getDestination() {
-        return destination;
-    }
-
-    public void setDestination(Destination destination) {
-        this.destination = destination;
     }
 }

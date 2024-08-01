@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface HotelDAO {
 
+    List<Hotel> findAllJoin();
     void save(Hotel hotel);
 
     Hotel findHotelById(int hotelId);
@@ -15,4 +16,6 @@ public interface HotelDAO {
     void update(Hotel hotel);
 
     void delete(int hotelId);
+
+    List<Hotel> findByDestinationId(int desId);
 }

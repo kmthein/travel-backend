@@ -1,4 +1,5 @@
 package com.travelbackend.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -27,15 +28,25 @@ public class BusSchedule extends BaseEntity{
     @Column(name = "distance")
     private int distance;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH
+    })
     @JoinColumn(name = "departure_place")
     private Destination departurePlace;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH
+    })
     @JoinColumn(name = "arrival_place")
+
     private Destination arrivalPlace;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.DETACH,CascadeType.MERGE,
+            CascadeType.PERSIST,CascadeType.REFRESH
+    })
     @JoinColumn(name = "bus_id")
     private BusService busService;
 
